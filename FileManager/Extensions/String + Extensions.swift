@@ -35,6 +35,7 @@ extension String {
         }
         return NSPredicate(format: format, regex).evaluate(with: self)
     }
+}
     
 //    //MARK: - Random Text
 //    func generateRandomText() -> String {
@@ -46,4 +47,3 @@ extension String {
 //        }
 //        return randomText
 //    }
-}

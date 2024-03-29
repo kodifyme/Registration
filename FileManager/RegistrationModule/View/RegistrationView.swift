@@ -198,35 +198,26 @@ extension RegistrationView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == numberTextField {
-            let allowedCharacters = CharacterSet.decimalDigits
-            let disallowedCharacterSet = allowedCharacters.inverted
-            let containsOnlyDigits = string.rangeOfCharacter(from: disallowedCharacterSet) == nil
-            
-            if containsOnlyDigits {
-                numberTextField.setTextField(textField: numberTextField,
-                                             validType: .phoneNumber,
-                                             validMessage: "Phone is valid",
-                                             wrongMessage: "-",
-                                             string: string,
-                                             range: range)
-            }
-        } else {
-            
-            if textField == nameTextField {
-                nameTextField.setTextField(textField: nameTextField,
-                                           validType: .name,
-                                           validMessage: "Name is valid",
-                                           wrongMessage: "Only A-Z characters and min 1 character",
+            numberTextField.setTextField(textField: numberTextField,
+                                         validType: .phoneNumber,
+                                         validMessage: "Phone is valid",
+                                         wrongMessage: "-",
+                                         string: string,
+                                         range: range)
+        } else if textField == nameTextField {
+            nameTextField.setTextField(textField: nameTextField,
+                                       validType: .name,
+                                       validMessage: "Name is valid",
+                                       wrongMessage: "Only A-Z characters and min 1 character",
+                                       string: string,
+                                       range: range)
+        } else if textField == passwordTextField {
+            passwordTextField.setTextField(textField: passwordTextField,
+                                           validType: .password,
+                                           validMessage: "Password is valid",
+                                           wrongMessage: "Password is not valid",
                                            string: string,
                                            range: range)
-            } else if textField == passwordTextField {
-                passwordTextField.setTextField(textField: passwordTextField,
-                                               validType: .password,
-                                               validMessage: "Password is valid",
-                                               wrongMessage: "Password is not valid",
-                                               string: string,
-                                               range: range)
-            }
         }
         return false
     }

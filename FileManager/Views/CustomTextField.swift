@@ -51,47 +51,34 @@ final class CustomTextField: UITextField {
         addSubview(border)
     }
     
-    
     func setTextField(textField: UITextField, validType: String.ValidTypes, validMessage: String, wrongMessage: String, string: String, range: NSRange) {
-        let text = (textField.text ?? "") + string
-        var result = text
         
-        // Not Allowed Characters
-//        let notAllowedCharacters = CharacterSet(charactersIn: "!@#$%^&*()_-+=|")
-//        for char in string.unicodeScalars {
-//            if notAllowedCharacters.contains(char) {
-//                return
-//            }
-//        }
+        guard let currentText = textField.text,
+              let textRange = Range(range, in: currentText) else { return }
         
-        // use for shorting code / refactoring
-//        let allowedCharacters = CharacterSet.letters
-//        return result.rangeOfCharacter(from: allowedCharacters.inverted) == nil
-
-        if range.length == 1 {
-            let endIndex = text.index(text.startIndex, offsetBy: text.count - 1) //endIndex
-            result = String(text[text.startIndex..<endIndex])
-        } else {
-            result = text
+        let updateText = currentText.replacingCharacters(in: textRange, with: string)
+        
+        let allowedCharacters: CharacterSet
+        switch validType {
+        case .name:
+            allowedCharacters = CharacterSet.letters
+        case .phoneNumber:
+            allowedCharacters = CharacterSet.decimalDigits
+        case .password:
+            allowedCharacters = CharacterSet.letters
         }
         
-        //First Index is uppercased
-        if let firstChar = result.first, firstChar.isLowercase {
-            let uppercaseFirstChar = String(firstChar).uppercased()
-            result = uppercaseFirstChar + String(result.dropLast())
-        }
+        let containsOnlyAllowedCharacters = string.rangeOfCharacter(from: allowedCharacters.inverted) == nil
         
-        
-        //text.replacingOccurrences(of: <#T##StringProtocol#>, with: <#T##StringProtocol#>, range: <#T##Range<String.Index>?#>) //use for code shorting (refactoring)
-        
-        textField.text = result
-        
-        //MARK: - Set border color
-        if result.isEmpty {
-            border.backgroundColor = .gray
-        } else {
-            isValid = result.isValid(validType: validType)
-            border.backgroundColor = isValid ? .systemGreen : .red
+        if containsOnlyAllowedCharacters {
+            textField.text = updateText
+            
+            if updateText.isEmpty {
+                border.backgroundColor = .gray
+            } else {
+                let isValid = updateText.isValid(validType: validType)
+                border.backgroundColor = isValid ? .systemGreen : .red
+            }
         }
     }
 }
