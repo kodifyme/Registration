@@ -24,6 +24,10 @@ class FileManagerAdapter: FileSystemService {
     
     private let fileManager: FileManager
     
+    private var documentURL: URL? {
+        try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+    }
+    
     init(fileManager: FileManager = FileManager.default) {
         self.fileManager = fileManager
     }
@@ -35,7 +39,7 @@ class FileManagerAdapter: FileSystemService {
     }
     
     func createDirectory(for user: User) throws {
-        let documentURL = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        guard let documentURL else { return }
         let userDirectoryURL = documentURL.appendingPathComponent(user.userID)
         if !fileManager.fileExists(atPath: userDirectoryURL.path) {
             try fileManager.createDirectory(at: userDirectoryURL, withIntermediateDirectories: true)
@@ -84,7 +88,7 @@ class FileManagerAdapter: FileSystemService {
     }
     
     func itemExists(atPath path: String) -> Bool {
-        return fileManager.fileExists(atPath: path)
+        fileManager.fileExists(atPath: path)
     }
     
     func directoryExists(at url: URL) -> Bool {
@@ -95,70 +99,4 @@ class FileManagerAdapter: FileSystemService {
             return false
         }
     }
-}
-
-class FileSystemManager {   //FileService
-    
-    static let shared = FileSystemManager()
-    private let fileSystemService: FileSystemService
-    
-    private init() {
-        self.fileSystemService = FileManagerAdapter()
-    }
-    
-    //MARK: - Create Directory
-    func createDirectory(at url: URL) throws {
-        try fileSystemService.createDirectory(at: url)
-    }
-    
-    func createDirectory(for user: User) throws {
-        try fileSystemService.createDirectory(for: user)
-    }
-    
-    func showRootDirectoryContents() -> URL? {
-        fileSystemService.showRootDirectoryContents()
-    }
-    
-    //MARK: - Load Contents
-    func loadContents(inDirectory directory: URL) -> [URL] {
-        fileSystemService.loadContents(inDirectory: directory)
-    }
-    
-    //MARK: - Remove
-    func removeItem(at url: URL) throws {
-        try fileSystemService.removeItem(at: url)
-    }
-    
-    //MARK: - Load Text From File
-    func loadTextFromFile(at url: URL) -> String? {
-        fileSystemService.loadTextFromFile(at: url)
-    }
-    
-    //MARK: - Save Text To File
-    func saveTextToFile(text: Data, at url: URL) {
-        fileSystemService.saveTextToFile(text: text, at: url)
-    }
-    
-    func createFile(atPath: String, contents: Data?) {
-        fileSystemService.createFile(atPath: atPath, contents: contents)
-    }
-    
-    func directoryExists(at url: URL) -> Bool {
-        fileSystemService.directoryExists(at: url)
-    }
-    
-    func itemExists(atPath path: String) -> Bool {
-        fileSystemService.itemExists(atPath: path)
-    }
-    //    //MARK: - Unique Name
-    //    func uniqueName(for baseName: String, in directory: URL) -> String {
-    //        var name = baseName
-    //        var count = 1
-    //        let allFiles = try? FileSystemManager.shared.fileManager.contentsOfDirectory(atPath: directory.path)
-    //        while allFiles?.contains("\(name)") ?? false {
-    //            count += 1
-    //            name = "\(baseName) \(count)"
-    //        }
-    //        return name
-    //    }
 }

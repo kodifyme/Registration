@@ -9,12 +9,17 @@ import UIKit
 
 class FileSystemViewController: UIViewController {
     
-    let fileManager = FileSystemManager.shared
+    let fileManager = FileManagerAdapter()
     let userManager = UserDefaultsManager.shared
     var contents: [URL] = []
     var currentDirectory: URL?
     
-    private let fileSystemView = FileSystemView()
+    private lazy var fileSystemView: FileSystemView = {
+        let view = FileSystemView()
+        view.fileSystemViewControllerDelegate = self
+        view.fileSystemViewDataSource = self
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +39,6 @@ class FileSystemViewController: UIViewController {
     
     private func setupViews() {
         view.addSubview(fileSystemView)
-        fileSystemView.fileSystemViewControllerDelegate = self
-        fileSystemView.fileSystemViewDataSource = self
     }
     
     private func setupNavigationBar() {
@@ -55,7 +58,7 @@ class FileSystemViewController: UIViewController {
             currentDirectory = userDirectory
             loadContents()
         }
-        print(currentDirectory)
+        print(currentDirectory!)
     }
     
     private func loadContents() {
@@ -74,7 +77,7 @@ class FileSystemViewController: UIViewController {
     
     @objc
     private func addFolderButtonTapped() {
-        showFolderCreationAlert() { folderName in
+        AlertManager.shared.showFolderCreationAlert(from: self) { folderName in
             guard let folderName = folderName,
                   !folderName.isEmpty,
                   let directory = self.currentDirectory else { return }
@@ -91,7 +94,7 @@ class FileSystemViewController: UIViewController {
     
     @objc
     private func addFileButtonTapped() {
-        showFileCreationAlert { fileName in
+        AlertManager.shared.showFileCreationAlert(from: self) { fileName in
             guard let fileName = fileName, !fileName.isEmpty, let directory = self.currentDirectory else { return }
             let newFileURL = directory.appendingPathComponent(fileName)
             let text = "".data(using: .utf8)
@@ -168,7 +171,7 @@ extension FileSystemViewController: FileSystemViewDelegate {
     
     func didSelectFile(at url: URL) {
         let message = fileManager.loadTextFromFile(at: url)
-        showTextInsideFileAlert(at: url, message: message) { [weak self] text in
+        AlertManager.shared.showTextInsideFileAlert(from: self, at: url, message: message) { [weak self] text in
             guard let text = text,
                   let self = self else {
                 print("Text is nil")

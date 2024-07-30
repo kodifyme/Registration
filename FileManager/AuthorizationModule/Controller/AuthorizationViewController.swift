@@ -10,7 +10,6 @@ import UIKit
 class AuthorizationViewController: UIViewController {
     
     private let authorizationView = AuthorizationView()
-    let fileManager = FileSystemManager.shared
     let userManager = UserDefaultsManager.shared
     
     override func viewDidLoad() {
@@ -40,13 +39,14 @@ class AuthorizationViewController: UIViewController {
     }
 }
 
+//MARK: - AuthorizationViewDelegate
 extension AuthorizationViewController: AuthorizationViewDelegate {
     
     func loginButtonTapped(login: String?, password: String?) {
         guard let login = login,
               let password = password,
               let user = userManager.getUser(for: login, password: password) else {
-            failedLogin(title: "Неверные данные", message: "")
+            AlertManager.shared.failedLogin(from: self, title: "Неверные данные", message: "")
             return
         }
         userManager.setLoginStatus(isLoggedIn: true)

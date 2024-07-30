@@ -9,19 +9,6 @@ import UIKit
 
 class RegistrationViewController: UIViewController {
     
-    // hw
-    /*
-     // incapsulate filemanager (methods, properties) in FileSystemManager
-     // hide/incapsulate some parameteres/values like in Adapter Pattern in FileService
-     // FSVC - mvc ????
-     // init or some way tto make user non-optional in FSVC
-     //documentURL – duplicating -> to computed property
-     //addFolderButtonTapped — large method
-     // DataSource Delegate methods
-     */
-    
-    // 6. cell sorting ??
-    
     private let registrationView = RegistrationView()
     
     override func viewDidLoad() {

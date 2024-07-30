@@ -65,7 +65,7 @@ final class CustomTextField: UITextField {
         case .phoneNumber:
             allowedCharacters = CharacterSet.decimalDigits
         case .password:
-            allowedCharacters = CharacterSet.letters
+            allowedCharacters = CharacterSet.letters.union(CharacterSet.decimalDigits)
         }
         
         let containsOnlyAllowedCharacters = string.rangeOfCharacter(from: allowedCharacters.inverted) == nil
