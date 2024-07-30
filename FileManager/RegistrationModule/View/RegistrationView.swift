@@ -69,8 +69,17 @@ class RegistrationView: UIView {
         return noticeSwitch
     }()
     
-    private var screenObjectsStackView = UIStackView()
-    private var noticeStackView = UIStackView()
+    private lazy var screenObjectsStackView: UIStackView = {
+        UIStackView(arrangedSubviews: [nameTextField, numberTextField, passwordTextField, ageLabel, ageSlider, genderSegmentControl, noticeStackView],
+                    axis: .vertical,
+                    spacing: 30)
+    }()
+    
+    private lazy var noticeStackView: UIStackView = {
+        UIStackView(arrangedSubviews: [noticeLabel, noticeSwitch],
+                                      axis: .horizontal,
+                                      spacing: 20)
+    }()
     
     lazy var registrationButton: UIButton = {
         let button = UIButton(type: .system)
@@ -128,13 +137,11 @@ class RegistrationView: UIView {
         numberTextField.setText(to: nil)
     }
     
-    @objc
-    private func sliderValueChanged() {
+    @objc private func sliderValueChanged() {
         ageLabel.text = "Возраст: \(Int(ageSlider.value))"
     }
     
-    @objc
-    private func handleRegistrationButtonTap() {
+    @objc private func handleRegistrationButtonTap() {
         
         guard let user = user,
               user.name.isValid(validType: .name),
@@ -154,8 +161,7 @@ class RegistrationView: UIView {
         }
     }
     
-    @objc
-    private func handleSkipButtonTap() {
+    @objc private func handleSkipButtonTap() {
         delegate?.skipButtonTapped()
         endEditing(true)
     }
@@ -170,20 +176,6 @@ private extension RegistrationView {
     func setupViews() {
         ageLabel = UILabel(text: "Возраст: \(Int(ageSlider.value))",
                            font: .systemFont(ofSize: 18))
-        
-        noticeStackView = UIStackView(arrangedSubviews: [noticeLabel, noticeSwitch],
-                                      axis: .horizontal,
-                                      spacing: 20)
-        
-        screenObjectsStackView = UIStackView(arrangedSubviews: [nameTextField,
-                                                                numberTextField,
-                                                                passwordTextField,
-                                                                ageLabel,
-                                                                ageSlider,
-                                                                genderSegmentControl,
-                                                                noticeStackView],
-                                             axis: .vertical,
-                                             spacing: 30)
         
         [titleLabel,
          screenObjectsStackView,
@@ -242,8 +234,7 @@ private extension RegistrationView {
         addGestureRecognizer(swipeScreen)
     }
     
-    @objc
-    func hideKeyboard() {
+    @objc private func hideKeyboard() {
         endEditing(true)
     }
 }

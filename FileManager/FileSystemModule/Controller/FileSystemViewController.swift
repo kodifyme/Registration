@@ -75,8 +75,7 @@ class FileSystemViewController: UIViewController {
         }
     }
     
-    @objc
-    private func addFolderButtonTapped() {
+    @objc private func addFolderButtonTapped() {
         AlertManager.shared.showFolderCreationAlert(from: self) { folderName in
             guard let folderName = folderName,
                   !folderName.isEmpty,
@@ -92,8 +91,7 @@ class FileSystemViewController: UIViewController {
         }
     }
     
-    @objc
-    private func addFileButtonTapped() {
+    @objc private func addFileButtonTapped() {
         AlertManager.shared.showFileCreationAlert(from: self) { fileName in
             guard let fileName = fileName, !fileName.isEmpty, let directory = self.currentDirectory else { return }
             let newFileURL = directory.appendingPathComponent(fileName)
@@ -114,14 +112,12 @@ class FileSystemViewController: UIViewController {
         }
     }
     
-    @objc
-    private func logoutButtonTapped() {
+    @objc private func logoutButtonTapped() {
         userManager.setLoginStatus(isLoggedIn: false)
         navigationController?.popToRootViewController(animated: true)
     }
     
-    @objc
-    func backButtonTapped() {
+    @objc private func backButtonTapped() {
         guard let currentDirectory = currentDirectory else { return }
         let parentDirectory = currentDirectory.deletingLastPathComponent()
         self.currentDirectory = parentDirectory

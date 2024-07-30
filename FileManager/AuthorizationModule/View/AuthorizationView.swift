@@ -29,7 +29,11 @@ class AuthorizationView: UIView {
         return button
     }()
     
-    private var authorizationStackView = UIStackView()
+    private lazy var authorizationStackView: UIStackView = {
+        UIStackView(arrangedSubviews: [loginTextField, passwordTextField, loginButton],
+                    axis: .vertical,
+                    spacing: 30)
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,8 +50,7 @@ class AuthorizationView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    @objc
-    private func handleLoginButtonTap() {
+    @objc private func handleLoginButtonTap() {
         delegate?.loginButtonTapped(login: loginTextField.text, password: passwordTextField.text)
     }
     
@@ -59,10 +62,6 @@ class AuthorizationView: UIView {
 //MARK: - Setup Views
 private extension AuthorizationView {
     func setupViews() {
-        authorizationStackView = UIStackView(arrangedSubviews: [loginTextField, passwordTextField, loginButton],
-                                             axis: .vertical,
-                                             spacing: 30)
-        
         addSubview(authorizationStackView)
     }
 }

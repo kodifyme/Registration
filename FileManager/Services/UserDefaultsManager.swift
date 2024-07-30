@@ -16,7 +16,7 @@ struct  UserDefaultsManager {
     
     static let shared = UserDefaultsManager()
     
-    private init() { }
+    private init() {}
     
     private let defaults = UserDefaults.standard
 

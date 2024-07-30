@@ -9,7 +9,11 @@ import UIKit
 
 class RegistrationViewController: UIViewController {
     
-    private let registrationView = RegistrationView()
+    private lazy var registrationView: RegistrationView = {
+        let view = RegistrationView()
+        view.delegate = self
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +38,6 @@ class RegistrationViewController: UIViewController {
     }
     
     private func setupViews() {
-        registrationView.delegate = self
         view.addSubview(registrationView)
     }
 }
@@ -72,8 +75,7 @@ private extension RegistrationViewController {
                                                object: nil)
     }
     
-    @objc
-    func keyboardWillShow(notification: Notification) {
+    @objc private func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -92,8 +94,7 @@ private extension RegistrationViewController {
         }
     }
     
-    @objc
-    func keyboardWillHide(notification: Notification) {
+    @objc private func keyboardWillHide(notification: Notification) {
         UIView.animate(withDuration: 0.3) {
             self.view.frame.origin.y = self.originalContentOffset.y
         }

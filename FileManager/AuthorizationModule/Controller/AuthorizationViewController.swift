@@ -9,8 +9,13 @@ import UIKit
 
 class AuthorizationViewController: UIViewController {
     
-    private let authorizationView = AuthorizationView()
     let userManager = UserDefaultsManager.shared
+    
+    private lazy var authorizationView: AuthorizationView = {
+        let view = AuthorizationView()
+        view.delegate = self
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +39,6 @@ class AuthorizationViewController: UIViewController {
     }
     
     private func setupViews() {
-        authorizationView.delegate = self
         view.addSubview(authorizationView)
     }
 }
