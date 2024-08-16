@@ -39,7 +39,10 @@ class RegistrationView: UIView {
     let passwordTextField = CustomTextField(placeholder: "Пароль",
                                             keyBoardType: .default)
     
-    private var ageLabel = UILabel()
+    private lazy var ageLabel: UILabel = {
+        UILabel(text: "Возраст: \(Int(ageSlider.value))",
+                           font: .systemFont(ofSize: 18))
+    }()
     
     private lazy var ageSlider: UISlider = {
         let slider = UISlider()
@@ -174,8 +177,7 @@ class RegistrationView: UIView {
 //MARK: - Setup Views
 private extension RegistrationView {
     func setupViews() {
-        ageLabel = UILabel(text: "Возраст: \(Int(ageSlider.value))",
-                           font: .systemFont(ofSize: 18))
+        
         
         [titleLabel,
          screenObjectsStackView,
