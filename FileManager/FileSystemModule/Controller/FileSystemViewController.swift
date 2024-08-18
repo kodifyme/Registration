@@ -148,7 +148,7 @@ private extension FileSystemViewController {
 //MARK: - FileSystemViewDelegate
 extension FileSystemViewController: FileSystemViewDelegate {
     func didSelectDirectory(at indexPath: IndexPath) {
-        let selectedItem = contents[indexPath.row]
+        guard let selectedItem = contents[safe: indexPath.row] else { return }
         currentDirectory = selectedItem
         loadContents()
         updateLeftBarButtonItem()
@@ -156,7 +156,7 @@ extension FileSystemViewController: FileSystemViewDelegate {
     
     func deleteItem(at indexPath: IndexPath) {
         do {
-            let item = contents[indexPath.row]
+            guard let item = contents[safe: indexPath.row] else { return }
             try fileManager.removeItem(at: item)
             contents.remove(at: indexPath.row)
             fileSystemView.deleteRows(at: [indexPath], with: .automatic)

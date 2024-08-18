@@ -58,11 +58,7 @@ extension FileSystemView: UITableViewDelegate {
         
         guard let url = fileSystemViewDataSource?.item(at: indexPath) else { return }
         
-        if fileSystemViewDataSource?.directoryExists(at: url) ?? false {
-            fileSystemViewControllerDelegate?.didSelectDirectory(at: indexPath)
-        } else {
-            fileSystemViewControllerDelegate?.didSelectFile(at: url)
-        }
+        fileSystemViewDataSource?.directoryExists(at: url) ?? false ? fileSystemViewControllerDelegate?.didSelectDirectory(at: indexPath) : fileSystemViewControllerDelegate?.didSelectFile(at: url)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
