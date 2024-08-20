@@ -7,6 +7,18 @@
 
 import UIKit
 
+protocol FileSystemViewDataSource: AnyObject {
+    func item(at indexPath: IndexPath) -> URL
+    func directoryExists(at url: URL) -> Bool
+    func numberOfItems(inSection section: Int) -> Int
+}
+
+protocol FileSystemViewDelegate: AnyObject {
+    func didSelectFile(at url: URL)
+    func deleteItem(at indexPath: IndexPath)
+    func didSelectDirectory(at indexPath: IndexPath)
+}
+
 class FileSystemView: UITableView {
     
     let cellIndetifier = "Cell"
