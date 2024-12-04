@@ -6,55 +6,40 @@
 //
 
 import UIKit
-
-protocol RegistrationViewDelegate: AnyObject {
-    func skipButtonTapped()
-    func clearText()
-    func setBorderColor(_ color: UIColor)
-}
-
-protocol RegistrationViewDataSource: AnyObject {
-    func getButtonFrame() -> CGRect
-}
+import Combine
 
 class RegistrationView: UIView {
-    
-    weak var delegate: RegistrationViewDelegate?
-    
-    public var user: User? {
-        guard let name = nameTextField.text,
-              let phoneNumber = numberTextField.text,
-              let password = passwordTextField.text else { return nil }
-        return User(name: name, phoneNumber: phoneNumber, password: password, userID: UUID().uuidString)
-    }
-    
+    // ViewModel
+    var viewModel: RegistrationViewModel
+
+    private var cancellables = Set<AnyCancellable>()
+
     //MARK: - Subviews
     private let titleLabel = UILabel(text: "Регистрация",
                                      font: .systemFont(ofSize: 30))
-    
+
     let nameTextField = CustomTextField(placeholder: "Имя",
                                         keyBoardType: .default)
     let numberTextField = CustomTextField(placeholder: "Номер телефона",
                                           keyBoardType: .phonePad)
     let passwordTextField = CustomTextField(placeholder: "Пароль",
                                             keyBoardType: .default)
-    
+
     private lazy var ageLabel: UILabel = {
         UILabel(text: "Возраст: \(Int(ageSlider.value))",
-                           font: .systemFont(ofSize: 18))
+                font: .systemFont(ofSize: 18))
     }()
-    
+
     private lazy var ageSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = 6
         slider.maximumValue = 100
         slider.value = 6
         slider.minimumTrackTintColor = .blue
-        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
-    
+
     private let genderSegmentControl: UISegmentedControl = {
         let segmentControl = UISegmentedControl(items: ["Мужской", "Женский", "Другое"])
         segmentControl.selectedSegmentTintColor = .systemBlue
@@ -62,207 +47,157 @@ class RegistrationView: UIView {
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentControl
     }()
-    
+
     private let noticeLabel = UILabel(text: "Получать уведомление по смс",
                                       font: .italicSystemFont(ofSize: 17))
-    
+
     private let noticeSwitch: UISwitch = {
         let noticeSwitch = UISwitch()
         noticeSwitch.isOn = true
         return noticeSwitch
     }()
-    
+
     private lazy var screenObjectsStackView: UIStackView = {
         UIStackView(arrangedSubviews: [nameTextField, numberTextField, passwordTextField, ageLabel, ageSlider, genderSegmentControl, noticeStackView],
                     axis: .vertical,
                     spacing: 30)
     }()
-    
+
     private lazy var noticeStackView: UIStackView = {
         UIStackView(arrangedSubviews: [noticeLabel, noticeSwitch],
-                                      axis: .horizontal,
-                                      spacing: 20)
+                    axis: .horizontal,
+                    spacing: 20)
     }()
-    
+
     lazy var registrationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Зарегистрироваться", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 19)
-        button.addTarget(self, action: #selector(handleRegistrationButtonTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Пропустить", for: .normal)
         button.setTitleColor(.systemBlue, for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 19)
         button.configuration = .plain()
-        button.addTarget(self, action: #selector(handleSkipButtonTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+
+    init(viewModel: RegistrationViewModel) {
+            self.viewModel = viewModel
+            super.init(frame: .zero)
+            setupAppearance()
+            embedViews()
+            setupConstraints()
+            setupBindings()
+        }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupAppearance()
-        setupViews()
-        setDelegate()
-        setupConstraints()
-        setupKeyboardDismissalGestures()
-    }
     
+
     //MARK: - Private Methods
     private func setupAppearance() {
         backgroundColor = .white
         translatesAutoresizingMaskIntoConstraints = false
     }
-    
-    //MARK: - Set Delegate
-    private func setDelegate() {
-        nameTextField.delegate = self
-        numberTextField.delegate = self
-        passwordTextField.delegate = self
+
+    private func setupBindings() {
+        // Привязка текстовых полей к ViewModel
+        nameTextField.textPublisher
+            .assign(to: \.name, on: viewModel)
+            .store(in: &cancellables)
+
+        numberTextField.textPublisher
+            .assign(to: \.phoneNumber, on: viewModel)
+            .store(in: &cancellables)
+
+        passwordTextField.textPublisher
+            .assign(to: \.password, on: viewModel)
+            .store(in: &cancellables)
+
+        // Привязка слайдера к ViewModel
+        ageSlider.valuePublisher
+            .map { Int($0) }
+            .assign(to: \.age, on: viewModel)
+            .store(in: &cancellables)
+
+        // Обновление текста возраста
+        viewModel.$ageText
+            .map { Optional($0) } // Преобразуем String в String?
+            .assign(to: \UILabel.text, on: ageLabel)
+            .store(in: &cancellables)
+
+        // Привязка сегментированного контроллера к ViewModel
+        genderSegmentControl.selectedSegmentIndexPublisher
+            .assign(to: \.genderIndex, on: viewModel)
+            .store(in: &cancellables)
+
+        // Привязка переключателя к ViewModel
+        noticeSwitch.isOnPublisher
+            .assign(to: \.isNoticeEnabled, on: viewModel)
+            .store(in: &cancellables)
+
+        // Обновление состояния кнопки регистрации
+        viewModel.$isFormValid
+            .assign(to: \.isEnabled, on: registrationButton)
+            .store(in: &cancellables)
+
+        // Обработка нажатия кнопки регистрации
+        registrationButton.tapPublisher
+            .sink { [weak self] in
+                self?.viewModel.registerUser()
+            }
+            .store(in: &cancellables)
+
+        // Обработка результата регистрации
+        viewModel.$registrationResult
+            .compactMap { $0 }
+            .sink { result in
+                switch result {
+                case .success(let user):
+                    print("User registered: \(user)")
+                    // Переход на следующий экран или уведомление пользователя
+                case .failure(let error):
+                    print("Registration failed: \(error)")
+                    // Показать ошибку пользователю
+                }
+            }
+            .store(in: &cancellables)
     }
-    
-    func setBorderColor(_ color: UIColor) {
-        nameTextField.setBorderColor(color)
-        passwordTextField.setBorderColor(color)
-        numberTextField.setBorderColor(color)
-    }
-    
-    func clearText() {
-        nameTextField.setText(to: nil)
-        passwordTextField.setText(to: nil)
-        numberTextField.setText(to: nil)
-    }
-    
-    @objc private func sliderValueChanged() {
-        ageLabel.text = "Возраст: \(Int(ageSlider.value))"
-    }
-    
-    @objc private func handleRegistrationButtonTap() {
-        
-        guard let user = user,
-              user.name.isValid(validType: .name),
-              user.phoneNumber.isValid(validType: .phoneNumber),
-              user.password.isValid(validType: .password) else {
-            print("error")
-            return
-        }
-        
-        let registrationResult = UserDefaultsManager.shared.registerUser(user)
-        if registrationResult.success {
-            print("User registered successfully")
-            print("\(UserDefaultsManager.shared.getUsers())")
-            handleSkipButtonTap()
-        } else if let error = registrationResult.error {
-            print("Registration failed: \(error)")
-        }
-    }
-    
-    @objc private func handleSkipButtonTap() {
-        delegate?.skipButtonTapped()
-        endEditing(true)
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-//MARK: - Setup Views
+// MARK: - Embed Views
 private extension RegistrationView {
-    func setupViews() {
-        
-        
-        [titleLabel,
-         screenObjectsStackView,
-         registrationButton,
-         skipButton
-        ].forEach { addSubview($0) }
+    func embedViews() {
+        addSubview(titleLabel)
+        addSubview(screenObjectsStackView)
+        addSubview(registrationButton)
+        addSubview(skipButton)
     }
 }
 
-//MARK: - UITextFieldDelegate
-extension RegistrationView: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == numberTextField {
-            numberTextField.setTextField(textField: numberTextField,
-                                         validType: .phoneNumber,
-                                         validMessage: "Phone is valid",
-                                         wrongMessage: "-",
-                                         string: string,
-                                         range: range)
-        } else if textField == nameTextField {
-            nameTextField.setTextField(textField: nameTextField,
-                                       validType: .name,
-                                       validMessage: "Name is valid",
-                                       wrongMessage: "Only A-Z characters and min 1 character",
-                                       string: string,
-                                       range: range)
-        } else if textField == passwordTextField {
-            passwordTextField.setTextField(textField: passwordTextField,
-                                           validType: .password,
-                                           validMessage: "Password is valid",
-                                           wrongMessage: "Password is not valid",
-                                           string: string,
-                                           range: range)
-        }
-        return false
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nameTextField.resignFirstResponder()
-        numberTextField.resignFirstResponder()
-        passwordTextField.resignFirstResponder()
-        return true
-    }
-}
-
-private extension RegistrationView {
-    func setupKeyboardDismissalGestures() {
-        //UITapGestureRecognizer
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
-        
-        //UISwipeGestureRecognizer  //+--
-        let swipeScreen = UISwipeGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        swipeScreen.cancelsTouchesInView = false
-        swipeScreen.direction = [.left, .right]
-        addGestureRecognizer(swipeScreen)
-    }
-    
-    @objc private func hideKeyboard() {
-        endEditing(true)
-    }
-}
-
-//MARK: - RegistrationViewDataSource
-extension RegistrationView: RegistrationViewDataSource {
-    
-    func getButtonFrame() -> CGRect {
-        registrationButton.frame
-    }
-}
-
-//MARK: - Setup Constraints
+// MARK: - Constraints
 private extension RegistrationView {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            
+
             screenObjectsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50),
             screenObjectsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            screenObjectsStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
+            screenObjectsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+
             registrationButton.topAnchor.constraint(equalTo: screenObjectsStackView.bottomAnchor, constant: 40),
             registrationButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
+
             skipButton.topAnchor.constraint(equalTo: registrationButton.bottomAnchor, constant: 30),
             skipButton.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct  UserDefaultsManager {
+struct UserDefaultsManager {
     
     struct RegistrationResult {
         var success: Bool
@@ -80,10 +80,16 @@ extension UserDefaultsManager {
     
     func registerUser(_ user: User) -> RegistrationResult {
         if userExists(name: user.name) {
-            return RegistrationResult(success: false, error: "User already registered")
+            return RegistrationResult(
+                success: false,
+                error: "User already registered"
+            )
         } else {
             saveUser(user: user)
-            return RegistrationResult(success: true, error: nil)
+            return RegistrationResult(
+                success: true,
+                error: nil
+            )
         }
     }
 }

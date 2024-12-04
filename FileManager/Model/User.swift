@@ -13,7 +13,7 @@ struct User: Codable, Equatable {
     let password: String
     let userID: String
     
-    static func ==(lhs: User, rhs: User) -> Bool {
+    static func == (lhs: User, rhs: User) -> Bool {
         lhs.name == rhs.name && lhs.password == rhs.password
     }
 }

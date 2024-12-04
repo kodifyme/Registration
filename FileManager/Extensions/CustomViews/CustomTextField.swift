@@ -15,6 +15,7 @@ protocol TextFieldDelegate: AnyObject {
 final class CustomTextField: UITextField {
     
     //MARK: - Properties
+    
     var isValid: Bool = false
     
     var isSecureText: Bool = false {
@@ -24,6 +25,7 @@ final class CustomTextField: UITextField {
     }
     
     //MARK: - Subviews
+    
     let border: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
@@ -31,7 +33,8 @@ final class CustomTextField: UITextField {
         return view
     }()
     
-    //MARK: - Initialization
+    //MARK: - Init
+    
     init(placeholder: String, keyBoardType: UIKeyboardType) {
         super.init(frame: .zero)
         self.keyboardType = keyBoardType
@@ -47,6 +50,7 @@ final class CustomTextField: UITextField {
     }
     
     //MARK: - Private Methods
+    
     private func setupView() {
         addSubview(border)
     }
@@ -84,6 +88,7 @@ final class CustomTextField: UITextField {
 }
 
 //MARK: - TextFieldDataSource
+
 extension CustomTextField: TextFieldDelegate {
     
     func setText(to text: String?) {
@@ -96,7 +101,9 @@ extension CustomTextField: TextFieldDelegate {
 }
 
 //MARK: - Configure Border Constraints
+
 private extension CustomTextField {
+    
     func configureBorderConstraints() {
         NSLayoutConstraint.activate([
             border.leadingAnchor.constraint(equalTo: leadingAnchor),

@@ -18,7 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let builder = NavigationControllerBuilder()
         
-        let rootViewController = UserDefaultsManager.shared.isLoggedIn() ? builder.setViewControllers([RegistrationViewController(), FileSystemViewController()]).build() : builder.setRootViewController(RegistrationViewController()).build()
+        let rootViewController = UserDefaultsManager.shared.isLoggedIn() ? builder.setViewControllers(
+            [RegistrationViewController(), FileSystemViewController()]
+        ).build() : builder.setRootViewController(
+            RegistrationViewController()
+        ).build()
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
     }
