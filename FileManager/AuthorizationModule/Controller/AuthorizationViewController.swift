@@ -6,31 +6,25 @@
 //
 
 import UIKit
+import Combine
 
 class AuthorizationViewController: UIViewController {
     
-    let userManager = UserDefaultsManager.shared
-    
-    private lazy var authorizationView: AuthorizationView = {
-        let view = AuthorizationView()
-        view.delegate = self
-        return view
-    }()
+    private let viewModel = AuthorizationViewModel()
+    private lazy var authorizationView = AuthorizationView(viewModel: viewModel)
+    private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        embedViews()
         setupConstraints()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         setupAppearance()
+        setupBindings()
     }
     
     //MARK: - Private Methods
+    
     private func setupAppearance() {
         view.backgroundColor = .white
         navigationItem.title = "Авторизация"
@@ -38,30 +32,48 @@ class AuthorizationViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    private func setupViews() {
+    private func setupBindings() {
+        // Обработка результата авторизации
+        viewModel.$loginResult
+            .compactMap { $0 }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] result in
+                switch result {
+                case .success(let user):
+                    print("User logged in: \(user.name)")
+                    self?.navigateToFileSystem()
+                case .failure(let error):
+                    self?.showLoginError(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func navigateToFileSystem() {
+        let fileSystemVC = FileSystemViewController()
+        navigationController?.pushViewController(fileSystemVC, animated: true)
+    }
+    
+    private func showLoginError(_ error: Error) {
+        let alert = UIAlertController(title: "Ошибка", message: "Неверный логин или пароль", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+//MARK: - Embed Views
+
+private extension AuthorizationViewController {
+    
+    func embedViews() {
         view.addSubview(authorizationView)
     }
 }
 
-//MARK: - AuthorizationViewDelegate
-extension AuthorizationViewController: AuthorizationViewDelegate {
-    
-    func loginButtonTapped(login: String?, password: String?) {
-        guard let login = login,
-              let password = password,
-              let user = userManager.getUser(for: login, password: password) else {
-            AlertManager.shared.failedLogin(from: self, title: "Неверные данные", message: "")
-            return
-        }
-        userManager.setLoginStatus(isLoggedIn: true)
-        userManager.saveCurrentUsername(user.name)
-        navigationController?.pushViewController(FileSystemViewController(), animated: true)
-        
-    }
-}
+//MARK: - Constraints
 
-//MARK: - Setup Constraints
 private extension AuthorizationViewController {
+    
     func setupConstraints() {
         NSLayoutConstraint.activate([
             authorizationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

@@ -6,25 +6,25 @@
 //
 
 import UIKit
-
-protocol AuthorizationViewDelegate: AnyObject {
-    func loginButtonTapped(login: String?, password: String?)
-}
+import Combine
 
 class AuthorizationView: UIView {
     
-    weak var delegate: AuthorizationViewDelegate?
-
+    // MARK: - ViewModel
+    
+    var viewModel: AuthorizationViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
     //MARK: - Subviews
+    
     let loginTextField = CustomTextField(placeholder: "Логин", keyBoardType: .default)
     let passwordTextField = CustomTextField(placeholder: "Пароль", keyBoardType: .default)
     
-    private lazy var loginButton: UIButton = {
+    lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Вход", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 19)
-        button.addTarget(self, action: #selector(handleLoginButtonTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -35,23 +35,44 @@ class AuthorizationView: UIView {
                     spacing: 30)
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: AuthorizationViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         
         setupAppearance()
-        setupViews()
+        embedViews()
         setupConstraints()
+        setupBindings()
     }
     
-    //MARK: - Private Methods
     private func setupAppearance() {
         backgroundColor = .white
         passwordTextField.isSecureText = true
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    @objc private func handleLoginButtonTap() {
-        delegate?.loginButtonTapped(login: loginTextField.text, password: passwordTextField.text)
+    private func setupBindings() {
+        // Привязка текстовых полей к ViewModel
+        loginTextField.textPublisher
+            .assign(to: \.login, on: viewModel)
+            .store(in: &cancellables)
+        
+        passwordTextField.textPublisher
+            .assign(to: \.password, on: viewModel)
+            .store(in: &cancellables)
+        
+        // Обновление состояния кнопки входа
+        viewModel.$isLoginButtonEnabled
+            .receive(on: RunLoop.main)
+            .assign(to: \.isEnabled, on: loginButton)
+            .store(in: &cancellables)
+        
+        // Обработка нажатия кнопки входа
+        loginButton.tapPublisher
+            .sink { [weak self] in
+                self?.viewModel.loginUser()
+            }
+            .store(in: &cancellables)
     }
     
     required init?(coder: NSCoder) {
@@ -59,15 +80,19 @@ class AuthorizationView: UIView {
     }
 }
 
-//MARK: - Setup Views
+//MARK: - Embed Views
+
 private extension AuthorizationView {
-    func setupViews() {
+    
+    func embedViews() {
         addSubview(authorizationStackView)
     }
 }
 
-//MARK: - Setup Constraints
+//MARK: - Constraints
+
 private extension AuthorizationView {
+    
     func setupConstraints() {
         NSLayoutConstraint.activate([
             authorizationStackView.topAnchor.constraint(equalTo: topAnchor, constant: 50),

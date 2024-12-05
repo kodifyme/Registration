@@ -17,6 +17,7 @@
 		1241A2B22B7CC689006CEE16 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241A2B12B7CC689006CEE16 /* CustomTextField.swift */; };
 		1241A2B62B7CD923006CEE16 /* UILabel + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241A2B52B7CD923006CEE16 /* UILabel + Extensions.swift */; };
 		1241A2B82B7D3C80006CEE16 /* UIStackView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241A2B72B7D3C80006CEE16 /* UIStackView + Extensions.swift */; };
+		1268C92A2D023424009D216F /* AuthorizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268C9292D023424009D216F /* AuthorizationViewModel.swift */; };
 		126D75DB2B7FE45000DA01FF /* String + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D75DA2B7FE45000DA01FF /* String + Extensions.swift */; };
 		129099C22B910E1900FA409F /* NavigationControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129099C12B910E1900FA409F /* NavigationControllerBuilder.swift */; };
 		129099C82B9117C100FA409F /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129099C72B9117C100FA409F /* RegistrationView.swift */; };
@@ -49,6 +50,7 @@
 		1241A2B12B7CC689006CEE16 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		1241A2B52B7CD923006CEE16 /* UILabel + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extensions.swift"; sourceTree = "<group>"; };
 		1241A2B72B7D3C80006CEE16 /* UIStackView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extensions.swift"; sourceTree = "<group>"; };
+		1268C9292D023424009D216F /* AuthorizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewModel.swift; sourceTree = "<group>"; };
 		126D75DA2B7FE45000DA01FF /* String + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extensions.swift"; sourceTree = "<group>"; };
 		129099C12B910E1900FA409F /* NavigationControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerBuilder.swift; sourceTree = "<group>"; };
 		129099C72B9117C100FA409F /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 		1213B76A2B96611800477D0D /* AuthorizationModule */ = {
 			isa = PBXGroup;
 			children = (
+				1268C9282D02340E009D216F /* ViewModel */,
 				1213B76D2B96614A00477D0D /* View */,
 				1213B76E2B96615D00477D0D /* Controller */,
 			);
@@ -198,6 +201,14 @@
 				1241A2B02B7CBDB9006CEE16 /* Controller */,
 			);
 			path = FileSystemModule;
+			sourceTree = "<group>";
+		};
+		1268C9282D02340E009D216F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1268C9292D023424009D216F /* AuthorizationViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		129099C32B91177100FA409F /* RegistrationModule */ = {
@@ -366,6 +377,7 @@
 				12AAEC7F2D00D29D00C8B886 /* UITextField+Combine.swift in Sources */,
 				12EEC72B2BA85CAD001AA024 /* FileSystemView.swift in Sources */,
 				1222AFE42B91DA9A00A2DAAD /* User.swift in Sources */,
+				1268C92A2D023424009D216F /* AuthorizationViewModel.swift in Sources */,
 				12E989A72B83584C008919D8 /* AuthorizationViewController.swift in Sources */,
 				1213B76C2B96614200477D0D /* AuthorizationView.swift in Sources */,
 				12D157E42BCD98220043EA54 /* AlertManager.swift in Sources */,
