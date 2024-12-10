@@ -7,12 +7,6 @@
 
 import UIKit
 
-protocol FileSystemViewDataSource: AnyObject {
-    func item(at indexPath: IndexPath) -> URL
-    func directoryExists(at url: URL) -> Bool
-    func numberOfItems(inSection section: Int) -> Int
-}
-
 protocol FileSystemViewDelegate: AnyObject {
     func didSelectFile(at url: URL)
     func deleteItem(at indexPath: IndexPath)
@@ -21,23 +15,19 @@ protocol FileSystemViewDelegate: AnyObject {
 
 class FileSystemView: UITableView {
     
-    let cellIndetifier = "Cell"
-    
-    weak var fileSystemViewControllerDelegate: FileSystemViewDelegate?
-    weak var fileSystemViewDataSource: FileSystemViewDataSource?
+    private let cellIdentifier = "Cell"
+    weak var fileSystemViewdelegate: FileSystemViewDelegate?
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: .zero, style: .insetGrouped)
-        
         setupTableView()
     }
     
     private func setupTableView() {
         translatesAutoresizingMaskIntoConstraints = false
-        register(UITableViewCell.self, forCellReuseIdentifier: cellIndetifier)
-        
-        delegate = self
+        register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         dataSource = self
+        delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -48,17 +38,11 @@ class FileSystemView: UITableView {
 //MARK: - UITableViewDataSource
 extension FileSystemView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        fileSystemViewDataSource?.numberOfItems(inSection: section) ?? 0
+        0 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIndetifier, for: indexPath)
-        guard let dataSource = fileSystemViewDataSource else { return cell }
-        
-        let item = dataSource.item(at: indexPath)
-        let directory = dataSource.directoryExists(at: item)
-        cell.imageView?.image = directory ? UIImage(systemName: "folder") : UIImage(systemName: "doc.text")
-        cell.textLabel?.text = item.lastPathComponent
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         return cell
     }
 }
@@ -67,13 +51,12 @@ extension FileSystemView: UITableViewDataSource {
 extension FileSystemView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         deselectRow(at: indexPath, animated: true)
-        
-        guard let url = fileSystemViewDataSource?.item(at: indexPath) else { return }
-        
-        fileSystemViewDataSource?.directoryExists(at: url) ?? false ? fileSystemViewControllerDelegate?.didSelectDirectory(at: indexPath) : fileSystemViewControllerDelegate?.didSelectFile(at: url)
+        fileSystemViewdelegate?.didSelectDirectory(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        fileSystemViewControllerDelegate?.deleteItem(at: indexPath)
+        if editingStyle == .delete {
+            fileSystemViewdelegate?.deleteItem(at: indexPath)
+        }
     }
 }

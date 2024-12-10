@@ -38,29 +38,35 @@ class RegistrationViewModel {
         // Валидация формы
         Publishers.CombineLatest3($name, $phoneNumber, $password)
             .map { [unowned self] name, phone, password in
-                return self.validateName(name) && self.validatePhoneNumber(phone) && self.validatePassword(password)
+                let isValid = self.validateName(name) && self.validatePhoneNumber(phone) && self.validatePassword(password)
+                print("isFormValid: \(isValid)")
+                return isValid
             }
             .assign(to: \.isFormValid, on: self)
             .store(in: &cancellables)
     }
     
-    // Методы валидации
     private func validateName(_ name: String) -> Bool {
-        return name.isValid(validType: .name)
+        let isValid = !name.isEmpty
+        print("Name is valid: \(isValid)")
+        return isValid
     }
-    
+
     private func validatePhoneNumber(_ phone: String) -> Bool {
-        return phone.isValid(validType: .phoneNumber)
+        let isValid = !phone.isEmpty
+        print("Phone is valid: \(isValid)")
+        return isValid
     }
-    
+
     private func validatePassword(_ password: String) -> Bool {
-        return password.isValid(validType: .password)
+        let isValid = password.count >= 6
+        print("Password is valid: \(isValid)")
+        return isValid
     }
     
     // Метод регистрации пользователя
     func registerUser() {
         let user = User(name: name, phoneNumber: phoneNumber, password: password, userID: UUID().uuidString)
-        // Здесь может быть сетевой запрос или сохранение пользователя локально
         UserDefaultsManager.shared.registerUser(user)
         registrationResult = .success(user)
     }

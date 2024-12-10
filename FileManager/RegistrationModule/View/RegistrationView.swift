@@ -81,6 +81,7 @@ class RegistrationView: UIView {
         button.setTitle("Зарегистрироваться", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 15
         button.titleLabel?.font = .systemFont(ofSize: 19)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -214,6 +215,7 @@ private extension RegistrationView {
             
             registrationButton.topAnchor.constraint(equalTo: screenObjectsStackView.bottomAnchor, constant: 40),
             registrationButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            registrationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
             skipButton.topAnchor.constraint(equalTo: registrationButton.bottomAnchor, constant: 30),
             skipButton.centerXAnchor.constraint(equalTo: centerXAnchor)
