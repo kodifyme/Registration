@@ -16,13 +16,20 @@ extension Publishers {
         let control: Control
         let controlEvents: UIControl.Event
 
-        init(control: Control, events: UIControl.Event) {
+        init(
+            control: Control,
+            events: UIControl.Event
+        ) {
             self.control = control
             self.controlEvents = events
         }
 
         func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Void == S.Input {
-            let subscription = Subscription(subscriber: subscriber, control: control, event: controlEvents)
+            let subscription = Subscription(
+                subscriber: subscriber,
+                control: control,
+                event: controlEvents
+            )
             subscriber.receive(subscription: subscription)
         }
     }
@@ -34,14 +41,23 @@ extension Publishers {
         let controlEvents: UIControl.Event
         let keyPath: KeyPath<Control, Output>
 
-        init(control: Control, events: UIControl.Event, keyPath: KeyPath<Control, Output>) {
+        init(
+            control: Control,
+            events: UIControl.Event,
+            keyPath: KeyPath<Control, Output>
+        ) {
             self.control = control
             self.controlEvents = events
             self.keyPath = keyPath
         }
 
         func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Output == S.Input {
-            let subscription = Subscription(subscriber: subscriber, control: control, event: controlEvents, keyPath: keyPath)
+            let subscription = Subscription(
+                subscriber: subscriber,
+                control: control,
+                event: controlEvents,
+                keyPath: keyPath
+            )
             subscriber.receive(subscription: subscription)
         }
     }
@@ -52,10 +68,18 @@ extension Publishers.ControlEvent {
         private var subscriber: S?
         weak private var control: Control?
 
-        init(subscriber: S, control: Control, event: UIControl.Event) {
+        init(
+            subscriber: S,
+            control: Control,
+            event: UIControl.Event
+        ) {
             self.subscriber = subscriber
             self.control = control
-            control.addTarget(self, action: #selector(eventHandler), for: event)
+            control.addTarget(
+                self,
+                action: #selector(eventHandler),
+                for: event
+            )
         }
 
         func request(_ demand: Subscribers.Demand) {
@@ -78,11 +102,20 @@ extension Publishers.ControlProperty {
         weak private var control: Control?
         let keyPath: KeyPath<Control, Output>
 
-        init(subscriber: S, control: Control, event: UIControl.Event, keyPath: KeyPath<Control, Output>) {
+        init(
+            subscriber: S,
+            control: Control,
+            event: UIControl.Event,
+            keyPath: KeyPath<Control, Output>
+        ) {
             self.subscriber = subscriber
             self.control = control
             self.keyPath = keyPath
-            control.addTarget(self, action: #selector(eventHandler), for: event)
+            control.addTarget(
+                self,
+                action: #selector(eventHandler),
+                for: event
+            )
             // Отправляем начальное значение
             _ = subscriber.receive(control[keyPath: keyPath])
         }

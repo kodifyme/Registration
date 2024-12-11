@@ -10,7 +10,11 @@ import Combine
 
 extension UISwitch {
     var isOnPublisher: AnyPublisher<Bool, Never> {
-        Publishers.ControlProperty(control: self, events: [.valueChanged], keyPath: \.isOn)
-            .eraseToAnyPublisher()
+        Publishers.ControlProperty(
+            control: self,
+            events: [.valueChanged],
+            keyPath: \.isOn
+        )
+        .eraseToAnyPublisher()
     }
 }

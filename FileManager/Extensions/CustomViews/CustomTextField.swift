@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol TextFieldDelegate: AnyObject {
-    func setText(to text: String?)
-    func setBorderColor(_ color: UIColor)
-}
-
 final class CustomTextField: UITextField {
     
     //MARK: - Properties
@@ -84,19 +79,6 @@ final class CustomTextField: UITextField {
                 border.backgroundColor = isValid ? .systemGreen : .red
             }
         }
-    }
-}
-
-//MARK: - TextFieldDataSource
-
-extension CustomTextField: TextFieldDelegate {
-    
-    func setText(to text: String?) {
-        self.text = text
-    }
-    
-    func setBorderColor(_ color: UIColor) {
-        border.backgroundColor = color
     }
 }
 

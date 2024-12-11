@@ -11,10 +11,12 @@ import Combine
 class RegistrationViewController: UIViewController {
     
     // MARK: - SubViews
+    
     private let numberLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Номер телефона"
-        return label
+        UILabel(
+            text: "Номер телефона",
+            font: .systemFont(ofSize: 16)
+        )
     }()
     
     private let numberTextField: UITextField = {
@@ -41,9 +43,10 @@ class RegistrationViewController: UIViewController {
     }()
     
     private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Email"
-        return label
+        UILabel(
+            text: "Email",
+            font: .systemFont(ofSize: 16)
+        )
     }()
     
     private let emailTextField: UITextField = {
@@ -69,9 +72,10 @@ class RegistrationViewController: UIViewController {
     }()
     
     private let passwordLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Password"
-        return label
+        UILabel(
+            text: "Password",
+            font: .systemFont(ofSize: 16)
+        )
     }()
     
     //FIXME: - Need custom
@@ -144,13 +148,13 @@ class RegistrationViewController: UIViewController {
     }()
     
     private let signUpWithLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Или зарегистрируйтесь с помощью"
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.font = .italicSystemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
+        UILabel(
+            text: "Или зарегистрируйтесь с помощью",
+            textColor: .gray,
+            font: .italicSystemFont(ofSize: 14),
+            numberOfLines: 2,
+            textAlignment: .center
+        )
     }()
     
     //FIXME: - Layout

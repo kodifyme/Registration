@@ -10,7 +10,11 @@ import Combine
 
 extension UISegmentedControl {
     var selectedSegmentIndexPublisher: AnyPublisher<Int, Never> {
-        Publishers.ControlProperty(control: self, events: .valueChanged, keyPath: \.selectedSegmentIndex)
-            .eraseToAnyPublisher()
+        Publishers.ControlProperty(
+            control: self,
+            events: .valueChanged,
+            keyPath: \.selectedSegmentIndex
+        )
+        .eraseToAnyPublisher()
     }
 }

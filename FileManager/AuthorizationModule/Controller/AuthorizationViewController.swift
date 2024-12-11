@@ -14,9 +14,10 @@ class AuthorizationViewController: UIViewController {
     // MARK: - SubViews
     
     private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Email"
-        return label
+        UILabel(
+            text: "Email",
+            font: .systemFont(ofSize: 16)
+        )
     }()
     
     private let emailTextField: UITextField = {
@@ -42,9 +43,10 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private let passwordLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Password"
-        return label
+        UILabel(
+            text: "Password",
+            font: .systemFont(ofSize: 16)
+        )
     }()
     
     private lazy var passwordTextField: UITextField = {
@@ -127,13 +129,13 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private let loginWithLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Или войдите с помощью"
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.font = .italicSystemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
+        UILabel(
+            text: "Или войдите с помощью",
+            textColor: .gray,
+            font: .italicSystemFont(ofSize: 14),
+            numberOfLines: 2,
+            textAlignment: .center
+        )
     }()
     
     private lazy var loginWithStackView: UIStackView = {
@@ -181,11 +183,10 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private let noAccountLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Еще не регистрировались?"
-        label.font = .italicSystemFont(ofSize: 14)
-        label.textColor = .black
-        return label
+        UILabel(
+            text: "Еще не регистрировались?",
+            font: .italicSystemFont(ofSize: 14)
+        )
     }()
     
     private lazy var signUpButton: UIButton = {

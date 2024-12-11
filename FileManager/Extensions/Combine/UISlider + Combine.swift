@@ -10,7 +10,11 @@ import Combine
 
 extension UISlider {
     var valuePublisher: AnyPublisher<Float, Never> {
-        Publishers.ControlProperty(control: self, events: [.valueChanged], keyPath: \.value)
-            .eraseToAnyPublisher()
+        Publishers.ControlProperty(
+            control: self,
+            events: [.valueChanged],
+            keyPath: \.value
+        )
+        .eraseToAnyPublisher()
     }
 }

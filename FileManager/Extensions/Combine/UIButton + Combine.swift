@@ -10,7 +10,10 @@ import Combine
 
 extension UIButton {
     var tapPublisher: AnyPublisher<Void, Never> {
-        Publishers.ControlEvent(control: self, events: .touchUpInside)
-            .eraseToAnyPublisher()
+        Publishers.ControlEvent(
+            control: self,
+            events: .touchUpInside
+        )
+        .eraseToAnyPublisher()
     }
 }
