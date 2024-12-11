@@ -32,12 +32,13 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private lazy var emailStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailLabel, emailTextField])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [emailLabel, emailTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
     }()
     
     private let passwordLabel: UILabel = {
@@ -82,12 +83,13 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private lazy var passwordStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [passwordLabel, passwordTextField])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [passwordLabel, passwordTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
     }()
     
     private lazy var forgotButton: UIButton = {
@@ -135,22 +137,18 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private lazy var loginWithStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [leftLine, loginWithLabel, rightLine])
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [leftLine, loginWithLabel, rightLine],
+            axis: .horizontal,
+            distribution: .fill,
+            spacing: 8,
+            aligment: .center
+        )
     }()
     
     private lazy var googleButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "globe"), for: .normal)
-        button.setTitle(" Google", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "Google")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapGoogleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -158,11 +156,7 @@ class AuthorizationViewController: UIViewController {
     
     private lazy var appleButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "applelogo"), for: .normal)
-        button.setTitle(" Apple", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "Apple")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapAppleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -170,24 +164,20 @@ class AuthorizationViewController: UIViewController {
     
     private lazy var vkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "network"), for: .normal)
-        button.setTitle(" VK", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "VK")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapVKLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var socialButtonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [googleButton, appleButton, vkButton])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [googleButton, appleButton, vkButton],
+            axis: .horizontal,
+            distribution: .fillEqually,
+            spacing: 10,
+            aligment: .center
+        )
     }()
     
     private let noAccountLabel: UILabel = {
@@ -209,13 +199,13 @@ class AuthorizationViewController: UIViewController {
     }()
     
     private lazy var signUpStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [noAccountLabel, signUpButton])
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [noAccountLabel, signUpButton],
+            axis: .horizontal,
+            distribution: .fill,
+            spacing: 8,
+            aligment: .center
+        )
     }()
     
     override func viewDidLoad() {
@@ -315,7 +305,7 @@ private extension AuthorizationViewController {
             
             socialButtonsStackView.topAnchor.constraint(equalTo: loginWithStackView.bottomAnchor, constant: 20),
             socialButtonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            socialButtonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            socialButtonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),

@@ -11,31 +11,33 @@ import Combine
 class RegistrationViewController: UIViewController {
     
     // MARK: - SubViews
-    private let nameLabel: UILabel = {
+    private let numberLabel: UILabel = {
         let label = UILabel()
-        label.text = "Имя"
+        label.text = "Номер телефона"
         return label
     }()
     
-    private let nameTextField: UITextField = {
+    private let numberTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .white
+        textField.keyboardType = .numberPad
         textField.layer.cornerRadius = 10
         textField.layer.borderWidth = 2
         textField.layer.borderColor = UIColor.black.cgColor
-        textField.placeholder = "Имя"
+        textField.placeholder = "+7"
         textField.leftViewMode = .always
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         return textField
     }()
     
-    private lazy var nameStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, nameTextField])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+    private lazy var numberStackView: UIStackView = {
+        UIStackView(
+            arrangedSubviews: [numberLabel, numberTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
     }()
     
     private let emailLabel: UILabel = {
@@ -57,12 +59,13 @@ class RegistrationViewController: UIViewController {
     }()
     
     private lazy var emailStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailLabel, emailTextField])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [emailLabel, emailTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
     }()
     
     private let passwordLabel: UILabel = {
@@ -108,12 +111,13 @@ class RegistrationViewController: UIViewController {
     }()
     
     private lazy var passwordStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [passwordLabel, passwordTextField])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [passwordLabel, passwordTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
     }()
     
     private lazy var signUpButton: UIButton = {
@@ -151,22 +155,18 @@ class RegistrationViewController: UIViewController {
     
     //FIXME: - Layout
     private lazy var signUpWithStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [leftLine, signUpWithLabel, rightLine])
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [leftLine, signUpWithLabel, rightLine],
+            axis: .horizontal,
+            distribution: .fill,
+            spacing: 8,
+            aligment: .center
+        )
     }()
     
     private lazy var googleButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "globe"), for: .normal)
-        button.setTitle(" Google", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "Google")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapGoogleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -174,11 +174,7 @@ class RegistrationViewController: UIViewController {
     
     private lazy var appleButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "applelogo"), for: .normal)
-        button.setTitle(" Apple", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "Apple")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapAppleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -186,24 +182,20 @@ class RegistrationViewController: UIViewController {
     
     private lazy var vkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "network"), for: .normal)
-        button.setTitle(" VK", for: .normal)
-        button.tintColor = .black
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.contentHorizontalAlignment = .center
+        button.setImage(UIImage(named: "VK")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapVKLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var socialButtonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [googleButton, appleButton, vkButton])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        UIStackView(
+            arrangedSubviews: [googleButton, appleButton, vkButton],
+            axis: .horizontal,
+            distribution: .fillEqually,
+            spacing: 10,
+            aligment: .center
+        )
     }()
     
     override func viewDidLoad() {
@@ -256,7 +248,7 @@ private extension RegistrationViewController {
 private extension RegistrationViewController {
     
     func embedViews() {
-        [nameStackView,
+        [numberStackView,
          emailStackView,
          passwordStackView,
          signUpButton,
@@ -272,11 +264,11 @@ private extension RegistrationViewController {
     
     func setupLayout() {
         NSLayoutConstraint.activate([
-            nameStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            nameStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            nameStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            numberStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            numberStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            numberStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            emailStackView.topAnchor.constraint(equalTo: nameStackView.bottomAnchor, constant: 20),
+            emailStackView.topAnchor.constraint(equalTo: numberStackView.bottomAnchor, constant: 20),
             emailStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             emailStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -295,9 +287,9 @@ private extension RegistrationViewController {
             
             socialButtonsStackView.topAnchor.constraint(equalTo: signUpWithStackView.bottomAnchor, constant: 20),
             socialButtonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            socialButtonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            socialButtonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            nameTextField.heightAnchor.constraint(equalToConstant: 50),
+            numberTextField.heightAnchor.constraint(equalToConstant: 50),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
