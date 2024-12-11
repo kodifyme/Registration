@@ -5,18 +5,18 @@
 //  Created by KOДИ on 16.02.2024.
 //
 
-import UIKit
+import Foundation
 
 extension String {
     
     enum ValidTypes {
-        case name
+        case email
         case phoneNumber
         case password
     }
     
     enum Regex: String {
-        case name = "[a-zA-Z]{1,}"
+        case email = "^[A-Za-z0-9._%+-]+@(mail\\.ru|gmail\\.com|bk\\.ru)$"
         case phoneNumber = "^(\\+7|8)\\d{10}$"
         case password = "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}"
     }
@@ -26,8 +26,8 @@ extension String {
         var regex = ""
         
         switch validType {
-        case .name:
-            regex = Regex.name.rawValue
+        case .email:
+            regex = Regex.email.rawValue
         case .phoneNumber:
             regex = Regex.phoneNumber.rawValue
         case .password:
@@ -36,14 +36,3 @@ extension String {
         return NSPredicate(format: format, regex).evaluate(with: self)
     }
 }
-    
-//    //MARK: - Random Text
-//    func generateRandomText() -> String {
-//        let words = ["Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit"]
-//        
-//        var randomText = ""
-//        for _ in 0..<10 {
-//            randomText += words[Int.random(in: 0..<words.count)] + " "
-//        }
-//        return randomText
-//    }

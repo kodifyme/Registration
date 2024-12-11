@@ -59,7 +59,7 @@ final class CustomTextField: UITextField {
         
         let allowedCharacters: CharacterSet
         switch validType {
-        case .name:
+        case .email:
             allowedCharacters = CharacterSet.letters
         case .phoneNumber:
             allowedCharacters = CharacterSet.decimalDigits
