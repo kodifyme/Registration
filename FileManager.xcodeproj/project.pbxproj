@@ -34,6 +34,9 @@
 		12D7824F2D08A7EF00859566 /* FileSystemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */; };
 		12E989A72B83584C008919D8 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E989A62B83584C008919D8 /* AuthorizationViewController.swift */; };
 		12EEC72B2BA85CAD001AA024 /* FileSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EEC72A2BA85CAD001AA024 /* FileSystemView.swift */; };
+		12FFA30E2D0AF402008F4E9A /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFA30D2D0AF402008F4E9A /* RegistrationViewModel.swift */; };
+		12FFA3112D0AF416008F4E9A /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFA3102D0AF416008F4E9A /* RegistrationView.swift */; };
+		12FFA3142D0AF944008F4E9A /* AuthStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFA3132D0AF944008F4E9A /* AuthStates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +69,9 @@
 		12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemViewModel.swift; sourceTree = "<group>"; };
 		12E989A62B83584C008919D8 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		12EEC72A2BA85CAD001AA024 /* FileSystemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemView.swift; sourceTree = "<group>"; };
+		12FFA30D2D0AF402008F4E9A /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		12FFA3102D0AF416008F4E9A /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		12FFA3132D0AF944008F4E9A /* AuthStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,7 @@
 				129099C32B91177100FA409F /* RegistrationModule */,
 				1213B76A2B96611800477D0D /* AuthorizationModule */,
 				124674F42B98986500765749 /* FileSystemModule */,
+				12FFA3122D0AF934008F4E9A /* Helpers */,
 				1241A2B42B7CD90E006CEE16 /* Extensions */,
 				1241A2AE2B7CBD65006CEE16 /* Resources */,
 			);
@@ -213,6 +220,8 @@
 		129099C32B91177100FA409F /* RegistrationModule */ = {
 			isa = PBXGroup;
 			children = (
+				12FFA30C2D0AF3F2008F4E9A /* ViewModel */,
+				12FFA30F2D0AF408008F4E9A /* View */,
 				129099C62B91178F00FA409F /* Controller */,
 			);
 			path = RegistrationModule;
@@ -280,6 +289,30 @@
 				12EEC72A2BA85CAD001AA024 /* FileSystemView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		12FFA30C2D0AF3F2008F4E9A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				12FFA30D2D0AF402008F4E9A /* RegistrationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		12FFA30F2D0AF408008F4E9A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				12FFA3102D0AF416008F4E9A /* RegistrationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		12FFA3122D0AF934008F4E9A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				12FFA3132D0AF944008F4E9A /* AuthStates.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,8 +394,11 @@
 				12AAEC892D00D49300C8B886 /* UISegmentedControl + Combine.swift in Sources */,
 				1241A2B22B7CC689006CEE16 /* CustomTextField.swift in Sources */,
 				1241A29F2B7CB918006CEE16 /* RegistrationViewController.swift in Sources */,
+				12FFA3142D0AF944008F4E9A /* AuthStates.swift in Sources */,
+				12FFA30E2D0AF402008F4E9A /* RegistrationViewModel.swift in Sources */,
 				12AAEC7F2D00D29D00C8B886 /* UITextField+Combine.swift in Sources */,
 				12EEC72B2BA85CAD001AA024 /* FileSystemView.swift in Sources */,
+				12FFA3112D0AF416008F4E9A /* RegistrationView.swift in Sources */,
 				1222AFE42B91DA9A00A2DAAD /* User.swift in Sources */,
 				12E989A72B83584C008919D8 /* AuthorizationViewController.swift in Sources */,
 				12D157E42BCD98220043EA54 /* AlertManager.swift in Sources */,

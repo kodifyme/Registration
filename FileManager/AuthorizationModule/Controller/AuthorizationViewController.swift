@@ -50,12 +50,19 @@ private extension AuthorizationViewController {
 
 private extension AuthorizationViewController {
     
-    private func bindViewModel() {
+    func bindViewModel() {
+        
         authView.emailTextPublisher
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.viewModel.states = .none
+            })
             .assign(to: \.email, on: viewModel)
             .store(in: &cancellables)
         
         authView.passwordTextPublisher
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.viewModel.states = .none
+            })
             .assign(to: \.password, on: viewModel)
             .store(in: &cancellables)
         
@@ -65,7 +72,13 @@ private extension AuthorizationViewController {
             }
             .store(in: &cancellables)
         
-        viewModel.isAuthEnabled
+        authView.signUpButtonTapped
+            .sink { [weak self] in
+                self?.present(RegistrationViewController(), animated: true)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.isFormValid
             .sink { [weak self] isEnabled in
                 guard let self else { return }
                 self.authView.loginButton.isEnabled = isEnabled
@@ -90,7 +103,8 @@ private extension AuthorizationViewController {
                     self?.authView.loginButton.backgroundColor = .red
                     self?.authView.loginButton.setTitle("Проверьте введенные данные", for: .normal)
                 case .none:
-                    break
+                    self?.authView.loginButton.backgroundColor = .gray
+                    self?.authView.loginButton.setTitle("Вход", for: .normal)
                 }
             }
             .store(in: &cancellables)

@@ -1,23 +1,53 @@
 //
-//  AuthView.swift
+//  RegistrationView.swift
 //  FileManager
 //
-//  Created by KOДИ on 11.12.2024.
+//  Created by KOДИ on 12.12.2024.
 //
 
 import UIKit
 import Combine
 
-class AuthView: UIView {
+class RegistrationView: UIView {
     
     // MARK: - Publishers
     
+    let numberTextPublisher = PassthroughSubject<String, Never>()
     let emailTextPublisher = PassthroughSubject<String, Never>()
     let passwordTextPublisher = PassthroughSubject<String, Never>()
-    let signInButtonTapped = PassthroughSubject<Void, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
     
     // MARK: - SubViews
+    
+    private let numberLabel: UILabel = {
+        UILabel(
+            text: "Номер телефона",
+            font: .systemFont(ofSize: 16)
+        )
+    }()
+    
+    private let numberTextField: UITextField = {
+        let textField = UITextField()
+        textField.backgroundColor = .white
+        textField.keyboardType = .numberPad
+        textField.layer.cornerRadius = 10
+        textField.layer.borderWidth = 2
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.placeholder = "+7"
+        textField.leftViewMode = .always
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        return textField
+    }()
+    
+    private lazy var numberStackView: UIStackView = {
+        UIStackView(
+            arrangedSubviews: [numberLabel, numberTextField],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 5,
+            aligment: .fill
+        )
+    }()
     
     private let emailLabel: UILabel = {
         UILabel(
@@ -55,6 +85,7 @@ class AuthView: UIView {
         )
     }()
     
+    //FIXME: - Need custom
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         let imageName = textField.isSecureTextEntry ? "eye.slash" : "eye"
@@ -100,24 +131,12 @@ class AuthView: UIView {
         )
     }()
     
-    private lazy var forgotButton: UIButton = {
+    lazy var signUpButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Забыли пароль?", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .italicSystemFont(ofSize: 14)
-        button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(didTapForgotPass), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Вход", for: .normal)
+        button.setTitle("Регистрация", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -134,9 +153,9 @@ class AuthView: UIView {
         return view
     }()
     
-    private let loginWithLabel: UILabel = {
+    private let signUpWithLabel: UILabel = {
         UILabel(
-            text: "Или войдите с помощью",
+            text: "Или зарегистрируйтесь с помощью",
             textColor: .gray,
             font: .italicSystemFont(ofSize: 14),
             numberOfLines: 2,
@@ -144,9 +163,10 @@ class AuthView: UIView {
         )
     }()
     
-    private lazy var loginWithStackView: UIStackView = {
+    //FIXME: - Layout
+    private lazy var signUpWithStackView: UIStackView = {
         UIStackView(
-            arrangedSubviews: [leftLine, loginWithLabel, rightLine],
+            arrangedSubviews: [leftLine, signUpWithLabel, rightLine],
             axis: .horizontal,
             distribution: .fill,
             spacing: 8,
@@ -188,33 +208,6 @@ class AuthView: UIView {
         )
     }()
     
-    private let noAccountLabel: UILabel = {
-        UILabel(
-            text: "Еще не регистрировались?",
-            font: .italicSystemFont(ofSize: 14)
-        )
-    }()
-    
-    private lazy var signUpButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Регистрация", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var signUpStackView: UIStackView = {
-        UIStackView(
-            arrangedSubviews: [noAccountLabel, signUpButton],
-            axis: .horizontal,
-            distribution: .fill,
-            spacing: 8,
-            aligment: .center
-        )
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -227,8 +220,12 @@ class AuthView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func togglePasswordVisibility() {
+    @objc func togglePasswordVisibility() {
         passwordTextField.isSecureTextEntry.toggle()
+    }
+    
+    @objc private func numberTextFieldChanged(_ sender: UITextField) {
+        numberTextPublisher.send(sender.text ?? "")
     }
     
     @objc private func emailTextFieldChanged(_ sender: UITextField) {
@@ -239,16 +236,8 @@ class AuthView: UIView {
         passwordTextPublisher.send(sender.text ?? "")
     }
     
-    @objc private func didTapSignIn() {
-        signInButtonTapped.send()
-    }
-    
     @objc private func didTapSignUp() {
-        signUpButtonTapped.send()
-    }
-    
-    @objc private func didTapForgotPass() {
-       
+        signUpButtonTapped.send(())
     }
     
 //    @objc private func didTapGoogleLogin() {
@@ -264,40 +253,44 @@ class AuthView: UIView {
 //    }
 }
 
-// MARK: - Embed view
+// MARK: - Bind Actions
 
-private extension AuthView {
+private extension RegistrationView {
     
-    func embedViews() {
-        [emailStackView,
-         passwordStackView,
-         forgotButton,
-         loginButton,
-         loginWithStackView,
-         socialButtonsStackView,
-         signUpStackView
-        ].forEach { addSubview($0) }
+    func bindActions() {
+        numberTextField.addTarget(self, action: #selector(numberTextFieldChanged(_:)), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(passwordTextFieldChanged(_:)), for: .editingChanged)
+        signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
     }
 }
 
-// MARK: - Bind Actions
+// MARK: - Embed view
 
-private extension AuthView {
+private extension RegistrationView {
     
-    func bindActions() {
-        emailTextField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
-        passwordTextField.addTarget(self, action: #selector(passwordTextFieldChanged(_:)), for: .editingChanged)
-        loginButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+    func embedViews() {
+        [numberStackView,
+         emailStackView,
+         passwordStackView,
+         signUpButton,
+         signUpWithStackView,
+         socialButtonsStackView
+        ].forEach { addSubview($0) }
     }
 }
 
 // MARK: - Setup Layout
 
-private extension AuthView {
+private extension RegistrationView {
     
     func setupLayout() {
         NSLayoutConstraint.activate([
-            emailStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
+            numberStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
+            numberStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            numberStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            emailStackView.topAnchor.constraint(equalTo: numberStackView.bottomAnchor, constant: 20),
             emailStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             emailStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
@@ -305,32 +298,29 @@ private extension AuthView {
             passwordStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             passwordStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 15),
-            forgotButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            signUpButton.topAnchor.constraint(equalTo: passwordStackView.bottomAnchor, constant: 35),
+            signUpButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            signUpButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            signUpButton.heightAnchor.constraint(equalToConstant: 50),
             
-            loginButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor, constant: 35),
-            loginButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            loginButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            loginButton.heightAnchor.constraint(equalToConstant: 50),
+            signUpWithStackView.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 35),
+            signUpWithStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            signUpWithStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            loginWithStackView.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 35),
-            loginWithStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            loginWithStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
-            socialButtonsStackView.topAnchor.constraint(equalTo: loginWithStackView.bottomAnchor, constant: 20),
+            socialButtonsStackView.topAnchor.constraint(equalTo: signUpWithStackView.bottomAnchor, constant: 20),
             socialButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             socialButtonsStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
+            numberTextField.heightAnchor.constraint(equalToConstant: 50),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
+            //Lines
             rightLine.heightAnchor.constraint(equalToConstant: 1),
-            leftLine.widthAnchor.constraint(equalTo: loginWithLabel.widthAnchor, multiplier: 0.5),
+            rightLine.widthAnchor.constraint(equalTo: signUpWithLabel.widthAnchor, multiplier: 0.3),
             leftLine.heightAnchor.constraint(equalToConstant: 1),
-            rightLine.widthAnchor.constraint(equalTo: loginWithLabel.widthAnchor, multiplier: 0.5),
+            leftLine.widthAnchor.constraint(equalTo: signUpWithLabel.widthAnchor, multiplier: 0.3),
             
-            signUpStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            signUpStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
