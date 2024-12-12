@@ -23,8 +23,6 @@ class AuthorizationViewController: UIViewController {
         
         setupNavBar()
         setupAppearance()
-        //        setupLayout()
-        
         bindViewModel()
     }
 }
@@ -69,8 +67,12 @@ private extension AuthorizationViewController {
         
         viewModel.isAuthEnabled
             .sink { [weak self] isEnabled in
-                self?.authView.loginButton.isEnabled = isEnabled
-                self?.authView.loginButton.backgroundColor = isEnabled ? .black : .gray
+                guard let self else { return }
+                self.authView.loginButton.isEnabled = isEnabled
+                self.authView.loginButton.backgroundColor = isEnabled ? .black : .gray
+                if !isEnabled {
+                    self.authView.loginButton.setTitle("Вход", for: .normal)
+                }
             }
             .store(in: &cancellables)
         
@@ -92,19 +94,5 @@ private extension AuthorizationViewController {
                 }
             }
             .store(in: &cancellables)
-    }
-}
-
-// MARK: - Setup Layout
-
-private extension AuthorizationViewController {
-    
-    func setupLayout() {
-        NSLayoutConstraint.activate([
-            authView.topAnchor.constraint(equalTo: view.topAnchor),
-            authView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            authView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            authView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
     }
 }

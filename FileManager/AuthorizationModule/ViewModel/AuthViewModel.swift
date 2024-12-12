@@ -36,6 +36,9 @@ class AuthViewModel {
     var isAuthEnabled: AnyPublisher<Bool, Never> {
         Publishers.CombineLatest(isValidEmailPublisher, isValidPasswordPublisher)
             .map { $0 && $1 }
+            .handleEvents(receiveOutput: { [weak self] isEnabled in
+                if isEnabled { self?.states = .none }
+            })
             .eraseToAnyPublisher()
     }
     
