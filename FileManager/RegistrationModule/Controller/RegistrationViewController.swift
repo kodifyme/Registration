@@ -31,6 +31,7 @@ class RegistrationViewController: UIViewController {
 private extension RegistrationViewController {
     
     func setupAppearance() {
+        title = "Регистрация"
         view.backgroundColor = .white
     }
 }

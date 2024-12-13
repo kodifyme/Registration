@@ -32,6 +32,9 @@
 		12ADF8882B8515B60068E2A3 /* FileSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF8872B8515B60068E2A3 /* FileSystemViewController.swift */; };
 		12D157E42BCD98220043EA54 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D157E32BCD98220043EA54 /* AlertManager.swift */; };
 		12D7824F2D08A7EF00859566 /* FileSystemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */; };
+		12DAA7FE2D0CA3E600493A99 /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DAA7FD2D0CA3E600493A99 /* ForgotPasswordViewModel.swift */; };
+		12DAA8002D0CA3EB00493A99 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DAA7FF2D0CA3EB00493A99 /* ForgotPasswordView.swift */; };
+		12DAA8042D0CA3FF00493A99 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DAA8032D0CA3FF00493A99 /* ForgotPasswordViewController.swift */; };
 		12E989A72B83584C008919D8 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E989A62B83584C008919D8 /* AuthorizationViewController.swift */; };
 		12EEC72B2BA85CAD001AA024 /* FileSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EEC72A2BA85CAD001AA024 /* FileSystemView.swift */; };
 		12FFA30E2D0AF402008F4E9A /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFA30D2D0AF402008F4E9A /* RegistrationViewModel.swift */; };
@@ -67,6 +70,9 @@
 		12ADF8872B8515B60068E2A3 /* FileSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemViewController.swift; sourceTree = "<group>"; };
 		12D157E32BCD98220043EA54 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemViewModel.swift; sourceTree = "<group>"; };
+		12DAA7FD2D0CA3E600493A99 /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
+		12DAA7FF2D0CA3EB00493A99 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		12DAA8032D0CA3FF00493A99 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		12E989A62B83584C008919D8 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		12EEC72A2BA85CAD001AA024 /* FileSystemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemView.swift; sourceTree = "<group>"; };
 		12FFA30D2D0AF402008F4E9A /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -151,6 +157,7 @@
 				129099C42B91178300FA409F /* Model */,
 				129099C32B91177100FA409F /* RegistrationModule */,
 				1213B76A2B96611800477D0D /* AuthorizationModule */,
+				12DAA7F92D0CA3A500493A99 /* ForgotPasswordModule */,
 				124674F42B98986500765749 /* FileSystemModule */,
 				12FFA3122D0AF934008F4E9A /* Helpers */,
 				1241A2B42B7CD90E006CEE16 /* Extensions */,
@@ -283,6 +290,40 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		12DAA7F92D0CA3A500493A99 /* ForgotPasswordModule */ = {
+			isa = PBXGroup;
+			children = (
+				12DAA7FC2D0CA3D200493A99 /* ViewModel */,
+				12DAA7FB2D0CA3CB00493A99 /* View */,
+				12DAA7FA2D0CA3C200493A99 /* Controller */,
+			);
+			path = ForgotPasswordModule;
+			sourceTree = "<group>";
+		};
+		12DAA7FA2D0CA3C200493A99 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				12DAA8032D0CA3FF00493A99 /* ForgotPasswordViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		12DAA7FB2D0CA3CB00493A99 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				12DAA7FF2D0CA3EB00493A99 /* ForgotPasswordView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		12DAA7FC2D0CA3D200493A99 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				12DAA7FD2D0CA3E600493A99 /* ForgotPasswordViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		12EEC7292BA85CA2001AA024 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,10 +439,12 @@
 				12FFA30E2D0AF402008F4E9A /* RegistrationViewModel.swift in Sources */,
 				12AAEC7F2D00D29D00C8B886 /* UITextField+Combine.swift in Sources */,
 				12EEC72B2BA85CAD001AA024 /* FileSystemView.swift in Sources */,
+				12DAA7FE2D0CA3E600493A99 /* ForgotPasswordViewModel.swift in Sources */,
 				12FFA3112D0AF416008F4E9A /* RegistrationView.swift in Sources */,
 				1222AFE42B91DA9A00A2DAAD /* User.swift in Sources */,
 				12E989A72B83584C008919D8 /* AuthorizationViewController.swift in Sources */,
 				12D157E42BCD98220043EA54 /* AlertManager.swift in Sources */,
+				12DAA8042D0CA3FF00493A99 /* ForgotPasswordViewController.swift in Sources */,
 				12ADF8862B850FDC0068E2A3 /* UserDefaultsManager.swift in Sources */,
 				1292DC4B2C7294780011522F /* Array + Extensions.swift in Sources */,
 				122657C02D09ECAA007317BD /* AuthView.swift in Sources */,
@@ -412,6 +455,7 @@
 				122657BD2D09DD03007317BD /* AuthViewModel.swift in Sources */,
 				126D75DB2B7FE45000DA01FF /* String + Extensions.swift in Sources */,
 				12ADF8882B8515B60068E2A3 /* FileSystemViewController.swift in Sources */,
+				12DAA8002D0CA3EB00493A99 /* ForgotPasswordView.swift in Sources */,
 				12D7824F2D08A7EF00859566 /* FileSystemViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

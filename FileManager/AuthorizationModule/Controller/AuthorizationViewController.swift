@@ -74,13 +74,20 @@ private extension AuthorizationViewController {
         
         authView.signUpButtonTapped
             .sink { [weak self] in
-                self?.present(RegistrationViewController(), animated: true)
+                self?.present(UINavigationController(rootViewController: RegistrationViewController()), animated: true)
+            }
+            .store(in: &cancellables)
+        
+        authView.forgotPasswordTapped
+            .sink { [weak self] in
+                self?.present(UINavigationController(rootViewController: ForgotPasswordViewController()), animated: true)
             }
             .store(in: &cancellables)
         
         viewModel.isFormValid
             .sink { [weak self] isEnabled in
                 guard let self else { return }
+                
                 self.authView.loginButton.isEnabled = isEnabled
                 self.authView.loginButton.backgroundColor = isEnabled ? .black : .gray
                 if !isEnabled {

@@ -16,6 +16,7 @@ class AuthView: UIView {
     let passwordTextPublisher = PassthroughSubject<String, Never>()
     let signInButtonTapped = PassthroughSubject<Void, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
+    let forgotPasswordTapped = PassthroughSubject<Void, Never>()
     
     // MARK: - SubViews
     
@@ -248,7 +249,7 @@ class AuthView: UIView {
     }
     
     @objc private func didTapForgotPass() {
-       
+        forgotPasswordTapped.send()
     }
     
 //    @objc private func didTapGoogleLogin() {
