@@ -65,7 +65,9 @@ private extension RegistrationViewController {
         
         registrationView.signUpButtonTapped
             .sink { [weak self] in
-                self?.viewModel.submitRegistration()
+                if ((self?.viewModel.submitRegistration()) != nil) {
+                    self?.dismiss(animated: true)
+                }
             }
             .store(in: &cancellables)
         

@@ -68,7 +68,9 @@ private extension AuthorizationViewController {
         
         authView.signInButtonTapped
             .sink { [weak self] in
-                self?.viewModel.submitAuth()
+                if ((self?.viewModel.submitAuth()) != nil) {
+                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+                }
             }
             .store(in: &cancellables)
         

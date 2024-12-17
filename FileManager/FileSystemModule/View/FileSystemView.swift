@@ -20,6 +20,8 @@ class FileSystemView: UIView {
         super.init(frame: frame)
         
         setupTableView()
+        embedViews()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -33,6 +35,16 @@ class FileSystemView: UIView {
         )
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+    }
+}
+
+//MARK: - Embed Views
+
+private extension FileSystemView {
+    
+    func embedViews() {
+        [tableView].forEach { addSubview($0) }
     }
 }
 
@@ -63,4 +75,18 @@ extension FileSystemView: UITableViewDataSource {
 
 extension FileSystemView: UITableViewDelegate {
     
+}
+
+//MARK: - Setup Layout
+
+private extension FileSystemView {
+    
+    func setupLayout() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
 }
