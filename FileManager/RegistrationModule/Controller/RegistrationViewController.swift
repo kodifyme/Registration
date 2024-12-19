@@ -42,6 +42,10 @@ private extension RegistrationViewController {
     
     func bindViewModel() {
         
+        registrationView.getParentViewController = { [weak self] in
+            self
+        }
+        
         registrationView.numberTextPublisher
             .handleEvents(receiveOutput: { [weak self] _ in
                 self?.viewModel.states = .none
@@ -68,6 +72,23 @@ private extension RegistrationViewController {
                 if ((self?.viewModel.submitRegistration()) != nil) {
                     self?.dismiss(animated: true)
                 }
+            }
+            .store(in: &cancellables)
+        
+        // Google auth
+        registrationView.googleSignInPublisher
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Ошибка авторизации через Google: \(error.localizedDescription)")
+                case .finished:
+                    break
+                }
+            } receiveValue: { [weak self] result in
+                // MARK: - FIX
+                self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+                
+                print("Успешный вход через Google: \(result.map {$0.user.email})")
             }
             .store(in: &cancellables)
         

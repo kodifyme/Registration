@@ -7,6 +7,9 @@
 
 import UIKit
 import Combine
+import FirebaseAuth
+import GoogleSignIn
+import FirebaseCore
 
 class AuthView: UIView {
     
@@ -17,6 +20,9 @@ class AuthView: UIView {
     let signInButtonTapped = PassthroughSubject<Void, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
     let forgotPasswordTapped = PassthroughSubject<Void, Never>()
+    let googleSignInPublisher = PassthroughSubject<Result<AuthDataResult, Error>, Never>()
+    
+    var getParentViewController: (() -> UIViewController?)?
     
     // MARK: - SubViews
     
@@ -158,7 +164,7 @@ class AuthView: UIView {
     private lazy var googleButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "Google")?.withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.addTarget(self, action: #selector(didTapGoogleLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapGoogleLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -252,9 +258,45 @@ class AuthView: UIView {
         forgotPasswordTapped.send()
     }
     
-//    @objc private func didTapGoogleLogin() {
-//        print("Google login tapped")
-//    }
+    @objc private func didTapGoogleLogin() {
+        print("Tapped")
+        guard let parentVC = getParentViewController?() else { return }
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(withPresenting: parentVC) { [weak self] result, error in
+            if let error {
+                self?.googleSignInPublisher.send(.failure(error))
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                self?.googleSignInPublisher.send(.failure(NSError(
+                    domain: "SignIn",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey : "Не удалось получить токены"])))
+                return
+            }
+            
+            let credintal = GoogleAuthProvider.credential(
+                withIDToken: idToken,
+                accessToken: user.accessToken.tokenString
+            )
+            
+            Auth.auth().signIn(with: credintal) { result, error in
+                if let error {
+                    self?.googleSignInPublisher.send(.failure(error))
+                } else if let result {
+                    self?.googleSignInPublisher.send(.success(result))
+                }
+            }
+        }
+    }
 //    
 //    @objc private func didTapAppleLogin() {
 //        print("Apple login tapped")

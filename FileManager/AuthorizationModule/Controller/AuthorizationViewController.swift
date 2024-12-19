@@ -52,6 +52,10 @@ private extension AuthorizationViewController {
     
     func bindViewModel() {
         
+        authView.getParentViewController = { [weak self] in
+            self
+        }
+        
         authView.emailTextPublisher
             .handleEvents(receiveOutput: { [weak self] _ in
                 self?.viewModel.states = .none
@@ -86,6 +90,22 @@ private extension AuthorizationViewController {
             }
             .store(in: &cancellables)
         
+        // Google auth
+        authView.googleSignInPublisher
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Ошибка авторизации через Google: \(error.localizedDescription)")
+                case .finished:
+                    break
+                }
+            } receiveValue: { result in
+                // MARK: - FIX
+                self.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+                print("Успешный вход через Google: \(result.map {$0.user.email})")
+            }
+            .store(in: &cancellables)
+
         viewModel.isFormValid
             .sink { [weak self] isEnabled in
                 guard let self else { return }

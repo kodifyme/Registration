@@ -30,7 +30,7 @@
 		12AAEC892D00D49300C8B886 /* UISegmentedControl + Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAEC882D00D49300C8B886 /* UISegmentedControl + Combine.swift */; };
 		12ADF8862B850FDC0068E2A3 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF8852B850FDC0068E2A3 /* UserDefaultsManager.swift */; };
 		12ADF8882B8515B60068E2A3 /* FileSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF8872B8515B60068E2A3 /* FileSystemViewController.swift */; };
-		12B977C52D14854100950B30 /* Firebase Project Settings Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12B977C42D14854000950B30 /* Firebase Project Settings Info.plist */; };
+		12B977C52D14854100950B30 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12B977C42D14854000950B30 /* GoogleService-Info.plist */; };
 		12D157E42BCD98220043EA54 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D157E32BCD98220043EA54 /* AlertManager.swift */; };
 		12D7824F2D08A7EF00859566 /* FileSystemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */; };
 		12DAA7FE2D0CA3E600493A99 /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DAA7FD2D0CA3E600493A99 /* ForgotPasswordViewModel.swift */; };
@@ -70,7 +70,7 @@
 		12AAEC882D00D49300C8B886 /* UISegmentedControl + Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Combine.swift"; sourceTree = "<group>"; };
 		12ADF8852B850FDC0068E2A3 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		12ADF8872B8515B60068E2A3 /* FileSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemViewController.swift; sourceTree = "<group>"; };
-		12B977C42D14854000950B30 /* Firebase Project Settings Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Firebase Project Settings Info.plist"; sourceTree = "<group>"; };
+		12B977C42D14854000950B30 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D157E32BCD98220043EA54 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		12D7824E2D08A7EF00859566 /* FileSystemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemViewModel.swift; sourceTree = "<group>"; };
 		12DAA7FD2D0CA3E600493A99 /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 			children = (
 				1241A2A32B7CB919006CEE16 /* Assets.xcassets */,
 				1241A2A52B7CB919006CEE16 /* LaunchScreen.storyboard */,
-				12B977C42D14854000950B30 /* Firebase Project Settings Info.plist */,
+				12B977C42D14854000950B30 /* GoogleService-Info.plist */,
 				1241A2A82B7CB919006CEE16 /* Info.plist */,
 			);
 			path = Resources;
@@ -372,7 +372,6 @@
 				EF728C155240B7EB2DF850AD /* Pods-FileManager.debug.xcconfig */,
 				7F1874A392EB6E5D9FB601A0 /* Pods-FileManager.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -446,7 +445,7 @@
 			files = (
 				1241A2A72B7CB919006CEE16 /* LaunchScreen.storyboard in Resources */,
 				1241A2A42B7CB919006CEE16 /* Assets.xcassets in Resources */,
-				12B977C52D14854100950B30 /* Firebase Project Settings Info.plist in Resources */,
+				12B977C52D14854100950B30 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +583,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -647,7 +646,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
