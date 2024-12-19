@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.833881273263-324k4h12l0gn3d844ftqn6a4p37d1i99</string>
+            </array>
+		</dict>
+	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>UIApplicationSceneManifest</key>
