@@ -6,9 +6,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.833881273263-324k4h12l0gn3d844ftqn6a4p37d1i99</string>
-            </array>
+			<array>
+				<string>vk52875924</string>
+				<string>com.googleusercontent.apps.833881273263-324k4h12l0gn3d844ftqn6a4p37d1i99</string>
+			</array>
 		</dict>
 	</array>
 	<key>UIUserInterfaceStyle</key>
