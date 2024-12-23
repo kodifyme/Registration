@@ -97,6 +97,7 @@ extension Publishers.ControlEvent {
 }
 
 extension Publishers.ControlProperty {
+    
     final class Subscription<S: Subscriber, Control: UIControl, Output>: Combine.Subscription where S.Input == Output {
         private var subscriber: S?
         weak private var control: Control?

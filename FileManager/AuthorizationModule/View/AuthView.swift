@@ -10,6 +10,7 @@ import Combine
 import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
+import VKID
 
 class AuthView: UIView {
     
@@ -180,7 +181,7 @@ class AuthView: UIView {
     private lazy var vkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "VK")?.withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.addTarget(self, action: #selector(didTapVKLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapVKLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -302,9 +303,10 @@ class AuthView: UIView {
 //        print("Apple login tapped")
 //    }
 //    
-//    @objc private func didTapVKLogin() {
-//        print("VK login tapped")
-//    }
+    @objc private func didTapVKLogin() {
+        print("VK login tapped")
+        
+    }
 }
 
 // MARK: - Embed view
