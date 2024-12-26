@@ -83,3 +83,6 @@ fastlane/test_output
 
 iOSInjectionProject/
 Pods/
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
