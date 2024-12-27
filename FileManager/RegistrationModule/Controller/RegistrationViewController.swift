@@ -86,9 +86,13 @@ private extension RegistrationViewController {
                 }
             } receiveValue: { [weak self] result in
                 // MARK: - FIX
-                self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
-                
-                print("Успешный вход через Google: \(result.map {$0.user.email})")
+                switch result {
+                case .success:
+                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+                    print("Успешный вход через Google: \(result.map {$0.user.email})")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
             .store(in: &cancellables)
         
