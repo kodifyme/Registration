@@ -9,89 +9,74 @@ import UIKit
 
 final class CustomTextField: UITextField {
     
-    //MARK: - Properties
+    // MARK: - Properties
     
-    var isValid: Bool = false
+    private lazy var passwordToggleButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tintColor = .gray
+        button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+        return button
+    }()
     
-    var isSecureText: Bool = false {
-        didSet {
-            self.isSecureTextEntry = isSecureText
-        }
-    }
-    
-    //MARK: - Subviews
-    
-    let border: UIView = {
+    private lazy var rightViewContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.addSubview(passwordToggleButton)
         view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 24),
+            view.widthAnchor.constraint(equalToConstant: 40),
+            passwordToggleButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            passwordToggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
+        ])
         return view
     }()
     
-    //MARK: - Init
+    var isPasswordField: Bool = false {
+        didSet {
+            configurePasswordField()
+        }
+    }
     
-    init(placeholder: String, keyBoardType: UIKeyboardType) {
+    // MARK: - Init
+    
+    init(
+        placeholder: String,
+        keyBoardType: UIKeyboardType,
+        isPasswordField: Bool = false
+    ) {
         super.init(frame: .zero)
         self.keyboardType = keyBoardType
         self.placeholder = placeholder
+        self.layer.cornerRadius = 10
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.black.cgColor
+        self.leftViewMode = .always
+        self.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        self.isPasswordField = isPasswordField
         translatesAutoresizingMaskIntoConstraints = false
         
-        setupView()
-        configureBorderConstraints()
+        if isPasswordField {
+            configurePasswordField()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Private Methods
+    // MARK: - Private Methods
     
-    private func setupView() {
-        addSubview(border)
+    private func configurePasswordField() {
+        isSecureTextEntry = true
+        rightViewMode = .always
+        rightView = rightViewContainer
     }
     
-    func setTextField(textField: UITextField, validType: String.ValidTypes, validMessage: String, wrongMessage: String, string: String, range: NSRange) {
-        
-        guard let currentText = textField.text,
-              let textRange = Range(range, in: currentText) else { return }
-        
-        let updateText = currentText.replacingCharacters(in: textRange, with: string)
-        
-        let allowedCharacters: CharacterSet
-        switch validType {
-        case .email:
-            allowedCharacters = CharacterSet.letters
-        case .phoneNumber:
-            allowedCharacters = CharacterSet.decimalDigits
-        case .password:
-            allowedCharacters = CharacterSet.letters.union(CharacterSet.decimalDigits)
-        }
-        
-        let containsOnlyAllowedCharacters = string.rangeOfCharacter(from: allowedCharacters.inverted) == nil
-        
-        if containsOnlyAllowedCharacters {
-            textField.text = updateText
-            
-            if updateText.isEmpty {
-                border.backgroundColor = .gray
-            } else {
-                let isValid = updateText.isValid(validType: validType)
-                border.backgroundColor = isValid ? .systemGreen : .red
-            }
-        }
-    }
-}
-
-//MARK: - Configure Border Constraints
-
-private extension CustomTextField {
-    
-    func configureBorderConstraints() {
-        NSLayoutConstraint.activate([
-            border.leadingAnchor.constraint(equalTo: leadingAnchor),
-            border.trailingAnchor.constraint(equalTo: trailingAnchor),
-            border.bottomAnchor.constraint(equalTo: bottomAnchor),
-            border.heightAnchor.constraint(equalToConstant: 1)
-        ])
+    @objc private func togglePasswordVisibility() {
+        isSecureTextEntry.toggle()
+        let imageName = isSecureTextEntry ? "eye.slash" : "eye"
+        passwordToggleButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
 }

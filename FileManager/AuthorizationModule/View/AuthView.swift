@@ -34,17 +34,10 @@ class AuthView: UIView {
         )
     }()
     
-    private let emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.backgroundColor = .white
-        textField.layer.cornerRadius = 10
-        textField.layer.borderWidth = 2
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.placeholder = "Email"
-        textField.leftViewMode = .always
-        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        return textField
-    }()
+    private let emailTextField = CustomTextField(
+        placeholder: "Email",
+        keyBoardType: .emailAddress
+    )
     
     private lazy var emailStackView: UIStackView = {
         UIStackView(
@@ -63,40 +56,11 @@ class AuthView: UIView {
         )
     }()
     
-    private lazy var passwordTextField: UITextField = {
-        let textField = UITextField()
-        let imageName = textField.isSecureTextEntry ? "eye.slash" : "eye"
-        textField.backgroundColor = .white
-        textField.layer.cornerRadius = 10
-        textField.layer.borderWidth = 2
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.placeholder = "Password"
-        textField.isSecureTextEntry = true
-        textField.rightViewMode = .always
-        textField.leftViewMode = .always
-        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        
-        let passwordToggleButton = UIButton(type: .custom)
-        passwordToggleButton.tintColor = .gray
-        passwordToggleButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-        passwordToggleButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
-        passwordToggleButton.setImage(UIImage(systemName: imageName), for: .normal)
-        
-        let rightViewContainer = UIView()
-        rightViewContainer.addSubview(passwordToggleButton)
-        rightViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        
-        passwordToggleButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            rightViewContainer.heightAnchor.constraint(equalToConstant: 24),
-            rightViewContainer.widthAnchor.constraint(equalToConstant: 40),
-            passwordToggleButton.centerYAnchor.constraint(equalTo: rightViewContainer.centerYAnchor),
-            passwordToggleButton.trailingAnchor.constraint(equalTo: rightViewContainer.trailingAnchor, constant: -8)
-        ])
-        
-        textField.rightView = rightViewContainer
-        return textField
-    }()
+    private lazy var passwordTextField = CustomTextField(
+        placeholder: "Password",
+        keyBoardType: .default,
+        isPasswordField: true
+    )
     
     private lazy var passwordStackView: UIStackView = {
         UIStackView(

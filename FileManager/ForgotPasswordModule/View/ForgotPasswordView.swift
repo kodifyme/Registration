@@ -24,17 +24,10 @@ class ForgotPasswordView: UIView {
         )
     }()
     
-    private let emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.backgroundColor = .white
-        textField.layer.cornerRadius = 10
-        textField.layer.borderWidth = 2
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.placeholder = "Email"
-        textField.leftViewMode = .always
-        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        return textField
-    }()
+    private let emailTextField = CustomTextField(
+        placeholder: "Email",
+        keyBoardType: .emailAddress
+    )
     
     private lazy var emailStackView: UIStackView = {
         UIStackView(
