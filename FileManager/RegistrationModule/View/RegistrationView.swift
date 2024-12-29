@@ -34,7 +34,8 @@ class RegistrationView: UIView {
     
     private let numberTextField = CustomTextField(
         placeholder: "+7",
-        keyBoardType: .numberPad
+        keyBoardType: .numberPad,
+        validType: .phoneNumber
     )
     
     private lazy var numberStackView: UIStackView = {
@@ -56,7 +57,8 @@ class RegistrationView: UIView {
     
     private let emailTextField = CustomTextField(
         placeholder: "Email",
-        keyBoardType: .emailAddress
+        keyBoardType: .emailAddress,
+        validType: .email
     )
     
     private lazy var emailStackView: UIStackView = {
@@ -79,7 +81,8 @@ class RegistrationView: UIView {
     private lazy var passwordTextField = CustomTextField(
         placeholder: "Password",
         keyBoardType: .default,
-        isPasswordField: true
+        isPasswordField: true,
+        validType: .password
     )
     
     private lazy var passwordStackView: UIStackView = {

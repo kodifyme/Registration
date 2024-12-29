@@ -26,7 +26,8 @@ class ForgotPasswordView: UIView {
     
     private let emailTextField = CustomTextField(
         placeholder: "Email",
-        keyBoardType: .emailAddress
+        keyBoardType: .emailAddress,
+        validType: .email
     )
     
     private lazy var emailStackView: UIStackView = {
