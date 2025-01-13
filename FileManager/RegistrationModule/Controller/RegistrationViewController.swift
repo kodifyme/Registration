@@ -88,7 +88,7 @@ private extension RegistrationViewController {
                 // MARK: - FIX
                 switch result {
                 case .success:
-                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+                    
                     print("Успешный вход через Google: \(result.map {$0.user.email})")
                 case .failure(let error):
                     print(error.localizedDescription)

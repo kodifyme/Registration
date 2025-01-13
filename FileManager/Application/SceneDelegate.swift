@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let builder = NavigationControllerBuilder()
         
         let rootViewController = UserDefaultsManager.shared.isLoggedIn() ? builder.setViewControllers(
-            [AuthorizationViewController(), FileSystemViewController()]
+            [AuthorizationViewController()] //
         ).build() : builder.setRootViewController(
             AuthorizationViewController()
         ).build()

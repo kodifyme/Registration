@@ -73,7 +73,7 @@ private extension AuthorizationViewController {
         authView.signInButtonTapped
             .sink { [weak self] in
                 if ((self?.viewModel.submitAuth()) != nil) {
-                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+//                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
                 }
             }
             .store(in: &cancellables)
@@ -103,7 +103,7 @@ private extension AuthorizationViewController {
                 // MARK: - FIX
                 switch result {
                 case .success:
-                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
+//                    self?.navigationController?.pushViewController(FileSystemViewController(), animated: true)
                     print("Успешный вход через Google: \(result.map {$0.user.email})")
                 case .failure(let error):
                     print(error.localizedDescription)
