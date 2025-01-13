@@ -18,6 +18,7 @@ class AuthView: UIView {
     
     let emailTextPublisher = PassthroughSubject<String, Never>()
     let passwordTextPublisher = PassthroughSubject<String, Never>()
+    var nextFieldPublisher = PassthroughSubject<UITextField?, Never>()
     let signInButtonTapped = PassthroughSubject<Void, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
     let forgotPasswordTapped = PassthroughSubject<Void, Never>()
@@ -37,6 +38,8 @@ class AuthView: UIView {
     private let emailTextField = CustomTextField(
         placeholder: "Email",
         keyBoardType: .emailAddress,
+        returnKeyType: .next,
+        tag: 1,
         validType: .email
     )
     
@@ -61,6 +64,8 @@ class AuthView: UIView {
         placeholder: "Password",
         keyBoardType: .default,
         isPasswordField: true,
+        returnKeyType: .done,
+        tag: 2,
         validType: .password
     )
     
@@ -195,6 +200,11 @@ class AuthView: UIView {
         embedViews()
         setupLayout()
         bindActions()
+        setDelegates()
+    }
+    
+    private func setDelegates() {
+        [emailTextField, passwordTextField].forEach { $0.delegate = self }
     }
     
     required init?(coder: NSCoder) {
@@ -299,6 +309,17 @@ private extension AuthView {
         emailTextField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(passwordTextFieldChanged(_:)), for: .editingChanged)
         loginButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension AuthView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let nextField = superview?.viewWithTag(textField.tag + 1) as? UITextField
+        nextFieldPublisher.send(nextField)
+        return false
     }
 }
 

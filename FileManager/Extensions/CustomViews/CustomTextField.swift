@@ -51,6 +51,8 @@ final class CustomTextField: UITextField {
         placeholder: String,
         keyBoardType: UIKeyboardType,
         isPasswordField: Bool = false,
+        returnKeyType: UIReturnKeyType? = nil,
+        tag: Int? = nil,
         validType: String.ValidTypes? = nil
     ) {
         super.init(frame: .zero)
@@ -64,6 +66,14 @@ final class CustomTextField: UITextField {
         self.isPasswordField = isPasswordField
         self.validType = validType
         translatesAutoresizingMaskIntoConstraints = false
+        
+        if let returnKeyType {
+            self.returnKeyType = returnKeyType
+        }
+        
+        if let tag {
+            self.tag = tag
+        }
         
         if isPasswordField {
             configurePasswordField()

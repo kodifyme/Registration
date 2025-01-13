@@ -24,6 +24,7 @@ class AuthorizationViewController: UIViewController {
         setupNavBar()
         setupAppearance()
         bindViewModel()
+        initializeHideKeyboard()
     }
 }
 
@@ -68,6 +69,15 @@ private extension AuthorizationViewController {
                 self?.viewModel.states = .none
             })
             .assign(to: \.password, on: viewModel)
+            .store(in: &cancellables)
+        
+        authView.nextFieldPublisher
+            .sink { [weak self] nextField in
+                nextField?.becomeFirstResponder()
+                if nextField == nil {
+                    self?.view.endEditing(true)
+                }
+            }
             .store(in: &cancellables)
         
         authView.signInButtonTapped
@@ -144,3 +154,18 @@ private extension AuthorizationViewController {
             .store(in: &cancellables)
     }
 }
+
+// MARK: - Gesture Recognizer
+
+private extension AuthorizationViewController {
+    
+    func initializeHideKeyboard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
+}
+
