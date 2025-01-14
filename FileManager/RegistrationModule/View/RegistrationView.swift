@@ -33,7 +33,7 @@ class RegistrationView: UIView {
         )
     }()
     
-    private let numberTextField = CustomTextField(
+    let numberTextField = CustomTextField(
         placeholder: "+7",
         keyBoardType: .numberPad,
         returnKeyType: .continue,

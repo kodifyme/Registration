@@ -24,6 +24,7 @@ class RegistrationViewController: UIViewController {
         setupAppearance()
         bindViewModel()
         initializeHideKeyboard()
+        addDoneButtonOnKeyboard()
     }
     
     @objc func hideKeyboard() {
@@ -154,5 +155,22 @@ private extension RegistrationViewController {
             action: #selector(hideKeyboard)
         )
         view.addGestureRecognizer(tap)
+    }
+}
+
+private extension RegistrationViewController {
+    
+    
+    func addDoneButtonOnKeyboard() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(hideKeyboard))
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        toolbar.isUserInteractionEnabled = true
+        
+        registrationView.numberTextField.inputAccessoryView = toolbar
     }
 }
