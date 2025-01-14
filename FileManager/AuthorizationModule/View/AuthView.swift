@@ -18,7 +18,7 @@ class AuthView: UIView {
     
     let emailTextPublisher = PassthroughSubject<String, Never>()
     let passwordTextPublisher = PassthroughSubject<String, Never>()
-    var nextFieldPublisher = PassthroughSubject<UITextField?, Never>()
+    let nextFieldPublisher = PassthroughSubject<UITextField?, Never>()
     let signInButtonTapped = PassthroughSubject<Void, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
     let forgotPasswordTapped = PassthroughSubject<Void, Never>()

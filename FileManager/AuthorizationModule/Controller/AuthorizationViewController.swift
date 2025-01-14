@@ -26,6 +26,10 @@ class AuthorizationViewController: UIViewController {
         bindViewModel()
         initializeHideKeyboard()
     }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 // MARK: - Setup Navigation Bar
@@ -162,10 +166,6 @@ private extension AuthorizationViewController {
     func initializeHideKeyboard() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
-    }
-    
-    @objc func hideKeyboard() {
-        view.endEditing(true)
     }
 }
 

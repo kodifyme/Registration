@@ -18,6 +18,7 @@ class RegistrationView: UIView {
     let numberTextPublisher = PassthroughSubject<String, Never>()
     let emailTextPublisher = PassthroughSubject<String, Never>()
     let passwordTextPublisher = PassthroughSubject<String, Never>()
+    let nextFieldPublisher = PassthroughSubject<UITextField?, Never>()
     let signUpButtonTapped = PassthroughSubject<Void, Never>()
     let googleSignInPublisher = PassthroughSubject<Result<AuthDataResult, Error>, Never>()
     
@@ -35,6 +36,8 @@ class RegistrationView: UIView {
     private let numberTextField = CustomTextField(
         placeholder: "+7",
         keyBoardType: .numberPad,
+        returnKeyType: .continue,
+        tag: 1,
         validType: .phoneNumber
     )
     
@@ -58,6 +61,8 @@ class RegistrationView: UIView {
     private let emailTextField = CustomTextField(
         placeholder: "Email",
         keyBoardType: .emailAddress,
+        returnKeyType: .continue,
+        tag: 2,
         validType: .email
     )
     
@@ -82,6 +87,8 @@ class RegistrationView: UIView {
         placeholder: "Password",
         keyBoardType: .default,
         isPasswordField: true,
+        returnKeyType: .done,
+        tag: 3,
         validType: .password
     )
     
@@ -178,10 +185,15 @@ class RegistrationView: UIView {
         embedViews()
         setupLayout()
         bindActions()
+        setDelegates()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setDelegates() {
+        [emailTextField, passwordTextField, numberTextField].forEach { $0.delegate = self }
     }
     
     @objc func togglePasswordVisibility() {
@@ -253,18 +265,6 @@ class RegistrationView: UIView {
 //    }
 }
 
-// MARK: - Bind Actions
-
-private extension RegistrationView {
-    
-    func bindActions() {
-        numberTextField.addTarget(self, action: #selector(numberTextFieldChanged(_:)), for: .editingChanged)
-        emailTextField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
-        passwordTextField.addTarget(self, action: #selector(passwordTextFieldChanged(_:)), for: .editingChanged)
-        signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
-    }
-}
-
 // MARK: - Embed view
 
 private extension RegistrationView {
@@ -277,6 +277,29 @@ private extension RegistrationView {
          signUpWithStackView,
          socialButtonsStackView
         ].forEach { addSubview($0) }
+    }
+}
+
+// MARK: - Bind Actions
+
+private extension RegistrationView {
+    
+    func bindActions() {
+        numberTextField.addTarget(self, action: #selector(numberTextFieldChanged(_:)), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(passwordTextFieldChanged(_:)), for: .editingChanged)
+        signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension RegistrationView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let nextField = superview?.viewWithTag(textField.tag + 1) as? UITextField
+        nextFieldPublisher.send(nextField)
+        return false
     }
 }
 

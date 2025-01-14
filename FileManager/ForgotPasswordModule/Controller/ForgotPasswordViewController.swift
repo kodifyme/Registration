@@ -23,6 +23,11 @@ class ForgotPasswordViewController: UIViewController {
         
         setupAppearance()
         bindViewModel()
+        initializeHideKeyboard()
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -85,5 +90,18 @@ private extension ForgotPasswordViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: - Gesture Recognizer
+
+private extension ForgotPasswordViewController {
+    
+    func initializeHideKeyboard() {
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard)
+        )
+        view.addGestureRecognizer(tap)
     }
 }

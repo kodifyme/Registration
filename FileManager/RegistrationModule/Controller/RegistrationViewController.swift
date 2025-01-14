@@ -23,6 +23,11 @@ class RegistrationViewController: UIViewController {
         
         setupAppearance()
         bindViewModel()
+        initializeHideKeyboard()
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -65,6 +70,15 @@ private extension RegistrationViewController {
                 self?.viewModel.states = .none
             })
             .assign(to: \.password, on: viewModel)
+            .store(in: &cancellables)
+        
+        registrationView.nextFieldPublisher
+            .sink { [weak self] nextField in
+                nextField?.becomeFirstResponder()
+                if nextField == nil {
+                    self?.view.endEditing(true)
+                }
+            }
             .store(in: &cancellables)
         
         registrationView.signUpButtonTapped
@@ -127,5 +141,18 @@ private extension RegistrationViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: - Gesture Recognizer
+
+private extension RegistrationViewController {
+    
+    func initializeHideKeyboard() {
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard)
+        )
+        view.addGestureRecognizer(tap)
     }
 }
