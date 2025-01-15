@@ -7,6 +7,6 @@ target 'FileManager' do
   # Pods for FileManager
 	pod 'GoogleSignIn'
 	pod 'Firebase/Auth'
-	pod 'VKID'
+	pod 'VKID', '~> 2.3'
 
 end

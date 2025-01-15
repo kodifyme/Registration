@@ -14,6 +14,8 @@ import VKID
 
 class AuthView: UIView {
     
+    var vkid: VKID?
+    
     // MARK: - Publishers
     
     let emailTextPublisher = PassthroughSubject<String, Never>()
@@ -149,17 +151,17 @@ class AuthView: UIView {
         return button
     }()
     
-    private lazy var vkButton: UIButton = {
+    private lazy var facebookButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "VK")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(didTapVKLogin), for: .touchUpInside)
+        button.setImage(UIImage(named: "Facebook")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(didTapFacebookLogin), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var socialButtonsStackView: UIStackView = {
         UIStackView(
-            arrangedSubviews: [googleButton, appleButton, vkButton],
+            arrangedSubviews: [googleButton, appleButton, facebookButton],
             axis: .horizontal,
             distribution: .fillEqually,
             spacing: 10,
@@ -279,7 +281,7 @@ class AuthView: UIView {
 //        print("Apple login tapped")
 //    }
 //    
-    @objc private func didTapVKLogin() {
+    @objc private func didTapFacebookLogin() {
         print("VK login tapped")
         
     }

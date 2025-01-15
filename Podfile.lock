@@ -75,7 +75,7 @@ PODS:
 DEPENDENCIES:
   - Firebase/Auth
   - GoogleSignIn
-  - VKID
+  - VKID (~> 2.3)
 
 SPEC REPOS:
   trunk:
@@ -116,6 +116,6 @@ SPEC CHECKSUMS:
   VKID: 9a90507dcfc2bb20f6d8cc25855bb8e72acfe807
   VKIDCore: ea7ca07d7df119cacfa419726cf720e6ceeb9689
 
-PODFILE CHECKSUM: 2bc3dabc2bc0681586de4df64eace1a7480beef9
+PODFILE CHECKSUM: 59c8901ca00f61fbb5aa0b59e7ae66c816cd306b
 
 COCOAPODS: 1.16.2

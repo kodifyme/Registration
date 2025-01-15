@@ -158,8 +158,9 @@ private extension RegistrationViewController {
     }
 }
 
+//MARK: - UIToolbar
+
 private extension RegistrationViewController {
-    
     
     func addDoneButtonOnKeyboard() {
         let toolbar = UIToolbar()
